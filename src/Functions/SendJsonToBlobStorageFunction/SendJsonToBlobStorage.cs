@@ -8,10 +8,10 @@ using System.Text.Json;
 namespace SendJsonToBlobStorageFunction
 {
     /// <summary>
-    /// Send a json file to Azure Blob Storage.
+    /// Send JSON data to Azure Blob Storage.
     /// </summary>
-    /// <param name="blobServiceClient"></param>
-    /// <param name="logger"></param>
+    /// <param name="blobServiceClient">Blobl service client</param>
+    /// <param name="logger">the logger</param>
     public partial class SendJsonToBlobStorage(BlobServiceClient blobServiceClient, 
         ILogger<SendJsonToBlobStorage> logger)
     {

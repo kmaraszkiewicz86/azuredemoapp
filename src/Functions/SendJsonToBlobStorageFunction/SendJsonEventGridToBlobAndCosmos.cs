@@ -6,6 +6,14 @@ using Microsoft.Extensions.Logging;
 
 namespace BlobEventGridToBlobAndCosmosFunction
 {
+    /// <summary>
+    /// Processes Event Grid events triggered by blob creation, downloads the blob content,  and stores the event
+    /// metadata and blob content in Azure Cosmos DB.
+    /// </summary>
+    /// <remarks>This function is designed to handle Event Grid events of type <c>BlobCreated</c>.  It
+    /// retrieves the blob content from Azure Blob Storage using the URL provided in the event data,  and saves the
+    /// event details and blob content into a Cosmos DB container.  The Cosmos DB database and container names are
+    /// predefined as <c>JsonDb</c> and <c>JsonFiles</c>, respectively.</remarks>
     public class BlobEventGridToBlobAndCosmos
     {
         private readonly BlobServiceClient _blobServiceClient;
@@ -24,6 +32,16 @@ namespace BlobEventGridToBlobAndCosmosFunction
             _logger = logger;
         }
 
+        /// <summary>
+        /// Processes an Event Grid event triggered by a blob creation, downloads the blob content,  and saves the event
+        /// details and blob content to Cosmos DB.
+        /// </summary>
+        /// <remarks>This method assumes the Event Grid event corresponds to a BlobCreated event.  It
+        /// parses the blob URL to extract the container and blob name, downloads the blob content,  and stores the
+        /// event metadata and blob content in a Cosmos DB container.</remarks>
+        /// <param name="eventGridEvent">The Event Grid event containing information about the blob creation.  The event must include a valid blob
+        /// URL in its data.</param>
+        /// <returns></returns>
         [Function("BlobEventGridToBlobAndCosmos")]
         public async Task Run(EventGridEvent eventGridEvent)
         {
