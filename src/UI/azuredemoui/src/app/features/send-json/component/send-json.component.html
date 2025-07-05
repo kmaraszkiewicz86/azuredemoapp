@@ -1,0 +1,4 @@
+    <h1>Nadrzędny widok</h1>
+    <button (click)="sendMessage()">Wyślij wiadomość</button>
+    <p>Aktualna wiadomość: {{ message$ | async }}</p>
+    <app-send-json-view [initialData]="childData" (formSubmit)="handleNotify($event)"></app-send-json-view>

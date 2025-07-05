@@ -36,7 +36,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('dev-demo-func', subscription().subscriptionId)))]",
+      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('demo-kmar-func', subscription().subscriptionId)))]",
       "resourceGroup": "[parameters('resourceGroupName')]",
       "apiVersion": "2019-10-01",
       "dependsOn": [
@@ -50,7 +50,7 @@
           "resources": [
             {
               "kind": "web",
-              "name": "dev-demo-func",
+              "name": "demo-kmar-func",
               "type": "microsoft.insights/components",
               "location": "[parameters('resourceLocation')]",
               "properties": {},
