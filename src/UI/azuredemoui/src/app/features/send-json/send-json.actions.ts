@@ -1,8 +1,9 @@
 import { createAction, props } from '@ngrx/store';
+import { SendJsonModels } from './send-json.models';
 
 export const sendJsonAction = createAction(
   '[sendJsonAction] Send Json Action',
-  props<{ message: string }>()
+  props<{ payload: SendJsonModels }>()
 );
 
 export const sendJsonSuccessAction = createAction(

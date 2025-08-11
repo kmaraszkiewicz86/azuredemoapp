@@ -23,11 +23,9 @@ export class SendJsonComponent {
     });
   }
 
-  sendMessage() {
-    this.store.dispatch(sendJsonAction({ message: 'Wiadomość z nadrzędnego komponentu!' }));
-  }
-
   handleNotify(event: SendJsonModels) {
     alert(`Odebrano z dziecka: ${JSON.stringify(event)}`);
+
+    this.store.dispatch(sendJsonAction({ payload: event }));
   }
 }

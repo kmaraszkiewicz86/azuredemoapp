@@ -7,9 +7,11 @@ import { SendJsonModels } from './send-json.models';
 })
 export class SendJsonService {
 
+  private readonly apiUrl = 'http://localhost:7144/api/jsonfiles';
+
   constructor(private http: HttpClient) { }
 
-  sendJsonData(url: string, json: SendJsonModels) {
-    return this.http.post(url, json);
+  sendJsonData(json: SendJsonModels) {
+    return this.http.post(this.apiUrl, json);
   }
 }
