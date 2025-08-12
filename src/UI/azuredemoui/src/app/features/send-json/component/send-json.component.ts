@@ -1,31 +1,32 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable } from 'rxjs';
 import { AppState } from '../../../app-state';
 import { sendJsonAction } from '../send-json.actions';
 import { SendJsonModels } from '../send-json.models';
+import { SendJsonViewComponent } from './form/send-json-view.component';
 
 @Component({
   selector: 'app-send-json',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule,
+    SendJsonViewComponent
+  ],
   templateUrl: './send-json.component.html',
   styleUrl: './send-json.component.scss'
 })
 export class SendJsonComponent {
-  message$: Observable<SendJsonModels>;
-  childData = 'Wiadomość do dziecka';
+  loading$: Observable<boolean>;
+  error$: Observable<string | undefined>;
 
   constructor(private store: Store<AppState>) {
-    this.message$ = this.store.select({
-      jsonData: (state: AppState) => state.jsonData,
-      loading: (state: AppState) => state.loading,
-      error: (state: AppState) => state.error
-    });
+  this.loading$ = this.store.select((state: AppState) => state.loading);
+  this.error$ = this.store.select((state: AppState) => state.error);
   }
 
   handleNotify(event: SendJsonModels) {
-    alert(`Odebrano z dziecka: ${JSON.stringify(event)}`);
-
     this.store.dispatch(sendJsonAction({ payload: event }));
   }
 }
