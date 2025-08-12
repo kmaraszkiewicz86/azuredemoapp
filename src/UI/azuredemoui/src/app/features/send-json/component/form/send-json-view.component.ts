@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
 
 @Component({
   selector: 'app-send-json-view',
-  standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './send-json-view.component.html',
   styleUrl: './send-json-view.component.scss'
