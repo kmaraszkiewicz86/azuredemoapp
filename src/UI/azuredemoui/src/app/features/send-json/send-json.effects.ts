@@ -6,7 +6,10 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 
 @Injectable()
 export class SendJsonEffects {
-  sendJson$ = createEffect(() =>
+  sendJson$;
+
+  constructor(private actions$: Actions, private service: SendJsonService) {
+    this.sendJson$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SendJsonActions.sendJsonAction),
       mergeMap(({ payload }) =>
@@ -17,6 +20,5 @@ export class SendJsonEffects {
       )
     )
   );
-
-  constructor(private actions$: Actions, private service: SendJsonService) {}
+  }
 }
