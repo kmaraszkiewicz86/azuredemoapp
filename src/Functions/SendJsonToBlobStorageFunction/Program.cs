@@ -9,19 +9,19 @@ var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.ConfigureFunctionsWebApplication();
 
-builder.Services.AddSingleton(x =>
-{
-    var connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
-    return new BlobServiceClient(connectionString);
-});
+//builder.Services.AddSingleton(x =>
+//{
+//    var connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+//    return new BlobServiceClient(connectionString);
+//});
 
-builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
-{
-    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-    string endpointUri = configuration["CosmosDb:Endpoint"];
-    string primaryKey = configuration["CosmosDb:PrimaryKey"];
+//builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
+//{
+//    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+//    string endpointUri = configuration["CosmosDb:Endpoint"];
+//    string primaryKey = configuration["CosmosDb:PrimaryKey"];
 
-    return new CosmosClient(endpointUri, primaryKey);
-});
+//    return new CosmosClient(endpointUri, primaryKey);
+//});
 
 builder.Build().Run();

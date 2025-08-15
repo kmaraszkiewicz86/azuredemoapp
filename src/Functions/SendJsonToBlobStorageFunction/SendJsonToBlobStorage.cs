@@ -5,17 +5,24 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace SendJsonToBlobStorageFunction
+namespace BlobEventGridToBlobAndCosmosFunction
 {
     /// <summary>
     /// Send JSON data to Azure Blob Storage.
     /// </summary>
     /// <param name="blobServiceClient">Blobl service client</param>
     /// <param name="logger">the logger</param>
-    public partial class SendJsonToBlobStorage(BlobServiceClient blobServiceClient, 
-        ILogger<SendJsonToBlobStorage> logger)
+    public class SendJsonToBlobStorage
     {
+        private readonly BlobServiceClient _blobServiceClient;
+        private readonly ILogger<SendJsonToBlobStorage> _logger;
         private const string ContainerName = "jsonfiles";
+
+        public SendJsonToBlobStorage(BlobServiceClient blobServiceClient, ILogger<SendJsonToBlobStorage> logger)
+        {
+            _blobServiceClient = blobServiceClient;
+            _logger = logger;
+        }
 
         /// <summary>
         /// Run the function to send JSON to Azure Blob Storage.
@@ -23,11 +30,10 @@ namespace SendJsonToBlobStorageFunction
         /// <param name="req"></param>
         /// <returns></returns>
         [Function("SendJsonToBlobStorage")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "jsonfiles")] HttpRequestData req)
         {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            logger.LogInformation("C# HTTP trigger function processed a request.");
-            
             var requestBody = await req.ReadAsStringAsync();
 
             if (string.IsNullOrWhiteSpace(requestBody))
@@ -37,7 +43,7 @@ namespace SendJsonToBlobStorageFunction
 
             var data = JsonSerializer.Deserialize<DemoPayload>(requestBody);
 
-            var containerClient = blobServiceClient.GetBlobContainerClient(ContainerName);
+            var containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
 
             await containerClient.CreateIfNotExistsAsync();
 
