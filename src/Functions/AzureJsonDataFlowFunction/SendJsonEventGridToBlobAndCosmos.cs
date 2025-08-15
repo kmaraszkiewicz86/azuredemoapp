@@ -4,7 +4,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace BlobEventGridToBlobAndCosmosFunction
+namespace AzureJsonDataFlowFunction
 {
     /// <summary>
     /// Processes Event Grid events triggered by blob creation, downloads the blob content,  and stores the event

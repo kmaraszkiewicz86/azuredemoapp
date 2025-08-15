@@ -5,7 +5,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
-namespace BlobEventGridToBlobAndCosmosFunction
+namespace AzureJsonDataFlowFunction
 {
     /// <summary>
     /// Retrieves JSON files from a Cosmos DB container and returns them in an HTTP

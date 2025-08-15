@@ -5,7 +5,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace BlobEventGridToBlobAndCosmosFunction
+namespace AzureJsonDataFlowFunction
 {
     /// <summary>
     /// Send JSON data to Azure Blob Storage.

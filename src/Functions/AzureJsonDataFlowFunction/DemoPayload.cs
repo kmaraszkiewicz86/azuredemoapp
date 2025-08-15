@@ -1,4 +1,4 @@
-namespace BlobEventGridToBlobAndCosmosFunction
+namespace AzureJsonDataFlowFunction
 {
     public class DemoPayload
     {
