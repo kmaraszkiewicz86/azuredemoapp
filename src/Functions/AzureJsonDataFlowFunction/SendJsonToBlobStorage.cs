@@ -1,8 +1,10 @@
 using Azure.Storage.Blobs;
+using AzureJsonDataFlowFunction.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using System.Text.Json;
 
 namespace AzureJsonDataFlowFunction
@@ -30,7 +32,7 @@ namespace AzureJsonDataFlowFunction
         /// <param name="req"></param>
         /// <returns></returns>
         [Function("SendJsonToBlobStorage")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "jsonfiles")] HttpRequestData req)
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "jsonfiles")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -38,7 +40,7 @@ namespace AzureJsonDataFlowFunction
 
             if (string.IsNullOrWhiteSpace(requestBody))
             {
-                return new BadRequestObjectResult("Request body cannot be empty.");
+                return await req.GetResultAsync("Request body cannot be empty.", HttpStatusCode.BadRequest);
             }
 
             var data = JsonSerializer.Deserialize<DemoPayload>(requestBody);
@@ -58,7 +60,7 @@ namespace AzureJsonDataFlowFunction
 
             var name = data?.Name ?? "unknown";
 
-            return new OkObjectResult($"Received JSON for {name}. Everything is OK.!");
+            return await req.GetResultAsync($"Received JSON for {name}. Everything is OK.!", HttpStatusCode.OK);
         }
     }
 }
