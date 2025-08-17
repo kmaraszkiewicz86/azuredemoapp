@@ -1,6 +1,5 @@
-using Azure.Storage.Blobs;
+﻿using Azure.Storage.Blobs;
 using AzureJsonDataFlowFunction.Extensions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -9,30 +8,20 @@ using System.Text.Json;
 
 namespace AzureJsonDataFlowFunction
 {
-    /// <summary>
-    /// Send JSON data to Azure Blob Storage.
-    /// </summary>
-    /// <param name="blobServiceClient">Blobl service client</param>
-    /// <param name="logger">the logger</param>
-    public class SendJsonToBlobStorage
+    public class SendJsonDataToBlobStorage
     {
         private readonly BlobServiceClient _blobServiceClient;
-        private readonly ILogger<SendJsonToBlobStorage> _logger;
+        private readonly ILogger<SendJsonDataToBlobStorage> _logger;
         private const string ContainerName = "jsonfiles";
 
-        public SendJsonToBlobStorage(BlobServiceClient blobServiceClient, ILogger<SendJsonToBlobStorage> logger)
+        public SendJsonDataToBlobStorage(BlobServiceClient blobServiceClient, ILogger<SendJsonDataToBlobStorage> logger)
         {
             _blobServiceClient = blobServiceClient;
             _logger = logger;
         }
 
-        /// <summary>
-        /// Run the function to send JSON to Azure Blob Storage.
-        /// </summary>
-        /// <param name="req"></param>
-        /// <returns></returns>
-        [Function("SendJsonToBlobStorage")]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "jsonfiles")] HttpRequestData req)
+        [Function("SendJsonDataToBlobStorage")]
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "jsonfiles/upload")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 

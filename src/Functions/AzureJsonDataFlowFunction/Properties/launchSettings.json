@@ -2,7 +2,7 @@
   "profiles": {
     "SendJsonToBlobStorageFunction": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7144",
+      "commandLineArgs": "--port 7144 --verbose",
       "launchBrowser": false
     }
   }

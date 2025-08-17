@@ -4,10 +4,10 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
-using System.Text.Json;
 
 namespace AzureJsonDataFlowFunction
 {
+
     /// <summary>
     /// Retrieves JSON files from a Cosmos DB container and returns them in an HTTP
     /// response.
