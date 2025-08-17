@@ -43,7 +43,7 @@ namespace AzureJsonDataFlowFunction
         /// URL in its data.</param>
         /// <returns></returns>
         [Function("BlobEventGridToBlobAndCosmos")]
-        public async Task Run(EventGridEvent eventGridEvent)
+        public async Task Run([EventGridTrigger] EventGridEvent eventGridEvent)
         {
             _logger.LogInformation("Received Event Grid event: {Id}", eventGridEvent.Id);
 
