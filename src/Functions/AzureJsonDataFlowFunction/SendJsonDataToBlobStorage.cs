@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using AzureJsonDataFlowFunction.Extensions;
+using AzureJsonDataFlowFunction.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,7 @@ namespace AzureJsonDataFlowFunction
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            var requestBody = await req.ReadAsStringAsync();
+            string? requestBody = await req.ReadAsStringAsync();
 
             if (string.IsNullOrWhiteSpace(requestBody))
             {
@@ -34,15 +35,15 @@ namespace AzureJsonDataFlowFunction
 
             var data = JsonSerializer.Deserialize<DemoPayload>(requestBody);
 
-            var containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
+            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
 
             await containerClient.CreateIfNotExistsAsync();
 
             var blobName = $"{Guid.NewGuid()}.json";
 
-            var blobClient = containerClient.GetBlobClient(blobName);
+            BlobClient blobClient = containerClient.GetBlobClient(blobName);
 
-            using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(requestBody)))
+            using (MemoryStream stream = new (System.Text.Encoding.UTF8.GetBytes(requestBody)))
             {
                 await blobClient.UploadAsync(stream, overwrite: true);
             }

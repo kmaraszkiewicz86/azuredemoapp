@@ -1,4 +1,5 @@
-﻿using AzureJsonDataFlowFunction.Extensions;
+﻿using Azure.Storage.Blobs;
+using AzureJsonDataFlowFunction.Extensions;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -42,7 +43,7 @@ namespace AzureJsonDataFlowFunction
         public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "jsonfiles")] HttpRequestData req)
         {
-            var container = _cosmosClient.GetContainer(CosmosDbDatabase, CosmosDbContainer);
+            Container container = _cosmosClient.GetContainer(CosmosDbDatabase, CosmosDbContainer);
 
             var query = "SELECT * FROM c";
             var iterator = container.GetItemQueryIterator<dynamic>(query);
