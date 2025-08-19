@@ -22,7 +22,7 @@ namespace AzureJsonDataFlowFunction.Functions
         }
 
         [Function("SendJsonDataToBlobStorage")]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "jsonfiles/upload")] HttpRequestData req)
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "jsonfiles")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -31,6 +31,11 @@ namespace AzureJsonDataFlowFunction.Functions
             if (string.IsNullOrWhiteSpace(requestBody))
             {
                 return await req.GetResultAsync("Request body cannot be empty.", HttpStatusCode.BadRequest);
+            }
+
+            if (!await CheckBlobAccountAvailableAsync(req))
+            {
+                return await req.GetResultAsync("Azure Blob Storage account is not available or credentials are invalid.", HttpStatusCode.InternalServerError);
             }
 
             var data = JsonSerializer.Deserialize<DemoPayload>(requestBody);
@@ -43,7 +48,7 @@ namespace AzureJsonDataFlowFunction.Functions
 
             BlobClient blobClient = containerClient.GetBlobClient(blobName);
 
-            using (MemoryStream stream = new (System.Text.Encoding.UTF8.GetBytes(requestBody)))
+            using (MemoryStream stream = new(System.Text.Encoding.UTF8.GetBytes(requestBody)))
             {
                 await blobClient.UploadAsync(stream, overwrite: true);
             }
@@ -51,6 +56,20 @@ namespace AzureJsonDataFlowFunction.Functions
             var name = data?.Name ?? "unknown";
 
             return await req.GetResultAsync($"Received JSON for {name}. Everything is OK.!", HttpStatusCode.OK);
+        }
+
+        private async Task<bool> CheckBlobAccountAvailableAsync(HttpRequestData req)
+        {
+            try
+            {
+                await _blobServiceClient.GetPropertiesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Azure Blob Storage account is not available or credentials are invalid.");
+                return false;
+            }
         }
     }
 }

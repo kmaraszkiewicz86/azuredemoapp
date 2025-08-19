@@ -1,13 +1,4 @@
 {
-  "extensions": {
-    "http": {
-      "cors": {
-        "allowedOrigins": [ "*" ],
-        "allowedMethods": [ "GET", "POST" ],
-        "supportCredentials": false
-      }
-    }
-  },
   "logging": {
     "applicationInsights": {
       "samplingSettings": {
