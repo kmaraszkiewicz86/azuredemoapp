@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 
-namespace AzureJsonDataFlowFunction
+namespace AzureJsonDataFlowFunction.Functions
 {
     public class SendJsonDataToBlobStorage
     {

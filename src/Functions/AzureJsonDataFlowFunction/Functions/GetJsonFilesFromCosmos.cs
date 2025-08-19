@@ -6,7 +6,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace AzureJsonDataFlowFunction
+namespace AzureJsonDataFlowFunction.Functions
 {
 
     /// <summary>
