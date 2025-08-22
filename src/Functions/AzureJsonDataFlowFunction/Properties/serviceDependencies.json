@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "cosmosdb1": {
+      "type": "cosmosdb",
+      "connectionId": "ConnectionStrings:CosmosDBConnection"
+    },
     "storage1": {
       "type": "storage",
       "connectionId": "AzureWebJobsStorage"
