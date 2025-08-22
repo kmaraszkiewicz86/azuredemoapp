@@ -1,6 +1,5 @@
-﻿using Azure.Storage.Blobs;
-using AzureJsonDataFlowFunction.Extensions;
-using Microsoft.Azure.Cosmos;
+﻿using AzureJsonDataFlowFunction.Extensions;
+using AzureJsonDataFlowFunction.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -18,18 +17,15 @@ namespace AzureJsonDataFlowFunction.Functions
     /// SQL query and returns them as a JSON array in the HTTP response.</remarks>
     public class GetJsonFilesFromCosmos
     {
-        private readonly CosmosClient _cosmosClient;
-        private readonly ILogger _logger;
-        private const string CosmosDbDatabase = "JsonDb";
-        private const string CosmosDbContainer = "JsonFiles";
+        private readonly ICosmosDbService _cosmosService;
+        private readonly ILogger<GetJsonFilesFromCosmos> _logger;
 
-        public GetJsonFilesFromCosmos(
-            CosmosClient cosmosClient,
-            ILogger<GetJsonFilesFromCosmos> logger)
+        public GetJsonFilesFromCosmos(ICosmosDbService cosmosService, ILogger<GetJsonFilesFromCosmos> logger)
         {
-            _cosmosClient = cosmosClient;
+            _cosmosService = cosmosService;
             _logger = logger;
         }
+
 
         /// <summary>
         /// Handles HTTP GET requests to retrieve JSON files from a Cosmos DB container.
@@ -43,19 +39,7 @@ namespace AzureJsonDataFlowFunction.Functions
         public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "jsonfiles")] HttpRequestData req)
         {
-            Container container = _cosmosClient.GetContainer(CosmosDbDatabase, CosmosDbContainer);
-
-            var query = "SELECT * FROM c";
-            var iterator = container.GetItemQueryIterator<dynamic>(query);
-            var results = new List<dynamic>();
-
-            while (iterator.HasMoreResults)
-            {
-                foreach (var item in await iterator.ReadNextAsync())
-                {
-                    results.Add(item);
-                }
-            }
+            List<dynamic> results = await _cosmosService.GetDataAsync(req);
 
             return await req.GetResultAsync(results, HttpStatusCode.BadRequest);
         }
