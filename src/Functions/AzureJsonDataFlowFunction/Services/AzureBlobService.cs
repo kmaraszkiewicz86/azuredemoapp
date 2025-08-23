@@ -19,22 +19,26 @@ namespace AzureJsonDataFlowFunction.Services
 
         public async Task<Result> SendJsonDataAsync(HttpRequestData req)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-
             string? requestBody = await req.ReadAsStringAsync();
+
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            _logger.LogInformation($"Get request body: {requestBody ?? "empty"}.");
 
             if (string.IsNullOrWhiteSpace(requestBody))
             {
+                _logger.LogError("Request body cannot be empty.");
                 return Result.BadRequest("Request body cannot be empty.");
             }
 
             if (!await CheckBlobAccountAvailableAsync(req))
             {
+                _logger.LogError("Azure Blob Storage account is not available or credentials are invalid.");
                 return Result.InternalServerError("Azure Blob Storage account is not available or credentials are invalid.");
             }
 
             var data = JsonSerializer.Deserialize<DemoPayload>(requestBody);
 
+            _logger.LogInformation("Connect and try to upload the blob item.");
             BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
 
             await containerClient.CreateIfNotExistsAsync();
@@ -43,9 +47,30 @@ namespace AzureJsonDataFlowFunction.Services
 
             BlobClient blobClient = containerClient.GetBlobClient(blobName);
 
-            using (MemoryStream stream = new(System.Text.Encoding.UTF8.GetBytes(requestBody)))
+            return await UploadBlobItem(requestBody, data, blobClient);
+        }
+
+        private async Task<Result> UploadBlobItem(string requestBody, DemoPayload? data, BlobClient blobClient)
+        {
+            try
             {
-                await blobClient.UploadAsync(stream, overwrite: true);
+                using (MemoryStream stream = new(System.Text.Encoding.UTF8.GetBytes(requestBody)))
+                {
+                    await blobClient.UploadAsync(stream, overwrite: true);
+                }
+
+                // Sprawdzenie, czy blob istnieje po uploadzie
+                bool exists = await blobClient.ExistsAsync();
+                if (!exists)
+                {
+                    _logger.LogError("Blob was not created after upload attempt.");
+                    return Result.InternalServerError("Blob was not created.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to upload blob.");
+                return Result.InternalServerError("Failed to upload blob.");
             }
 
             var name = data?.Name ?? "unknown";
