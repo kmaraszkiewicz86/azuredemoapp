@@ -59,12 +59,16 @@ namespace AzureJsonDataFlowFunction.Services
                     await blobClient.UploadAsync(stream, overwrite: true);
                 }
 
-                // Sprawdzenie, czy blob istnieje po uploadzie
+                // Check if the blob was created successfully
                 bool exists = await blobClient.ExistsAsync();
                 if (!exists)
                 {
                     _logger.LogError("Blob was not created after upload attempt.");
                     return Result.InternalServerError("Blob was not created.");
+                }
+                else
+                {
+                    _logger.LogInformation($"Blob uploaded successfully. Blob URI: {blobClient.Uri}");
                 }
             }
             catch (Exception ex)

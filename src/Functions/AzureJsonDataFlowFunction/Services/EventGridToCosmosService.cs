@@ -53,7 +53,9 @@ namespace AzureJsonDataFlowFunction.Services
             BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             BlobClient blobClient = containerClient.GetBlobClient(blobName);
 
-            string blobContent;
+
+            _logger.LogInformation("Downloading the blob content");
+            var blobContent = string.Empty;
             using (MemoryStream downloadStream = new())
             {
                 await blobClient.DownloadToAsync(downloadStream);
@@ -61,6 +63,8 @@ namespace AzureJsonDataFlowFunction.Services
                 using StreamReader reader = new(downloadStream);
                 blobContent = await reader.ReadToEndAsync();
             }
+
+            _logger.LogInformation($"Downloaded the blob content: {blobContent}");
 
             // Save event info and blob content to Cosmos DB
             Container cosmosContainer = _cosmosClient.GetContainer(CosmosDbDatabase, CosmosDbContainer);
