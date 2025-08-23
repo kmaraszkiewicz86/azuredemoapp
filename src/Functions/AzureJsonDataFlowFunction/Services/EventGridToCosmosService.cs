@@ -2,49 +2,29 @@ using Azure.Messaging.EventGrid;
 using Azure.Storage.Blobs;
 using AzureJsonDataFlowFunction.Models;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace AzureJsonDataFlowFunction.Functions
+namespace AzureJsonDataFlowFunction.Services
 {
-    /// <summary>
-    /// Processes Event Grid events triggered by blob creation, downloads the blob content,  and stores the event
-    /// metadata and blob content in Azure Cosmos DB.
-    /// </summary>
-    /// <remarks>This function is designed to handle Event Grid events of type <c>BlobCreated</c>.  It
-    /// retrieves the blob content from Azure Blob Storage using the URL provided in the event data,  and saves the
-    /// event details and blob content into a Cosmos DB container.  The Cosmos DB database and container names are
-    /// predefined as <c>JsonDb</c> and <c>JsonFiles</c>, respectively.</remarks>
-    public class BlobEventGridToBlobAndCosmos
+    public class EventGridToCosmosService : IEventGridToCosmosService
     {
         private readonly BlobServiceClient _blobServiceClient;
         private readonly CosmosClient _cosmosClient;
-        private readonly ILogger _logger;
+        private readonly ILogger<EventGridToCosmosService> _logger;
         private const string CosmosDbDatabase = "JsonDb";
         private const string CosmosDbContainer = "JsonFiles";
 
-        public BlobEventGridToBlobAndCosmos(
+        public EventGridToCosmosService(
             BlobServiceClient blobServiceClient,
             CosmosClient cosmosClient,
-            ILogger<BlobEventGridToBlobAndCosmos> logger)
+            ILogger<EventGridToCosmosService> logger)
         {
             _blobServiceClient = blobServiceClient;
             _cosmosClient = cosmosClient;
             _logger = logger;
         }
 
-        /// <summary>
-        /// Processes an Event Grid event triggered by a blob creation, downloads the blob content,  and saves the event
-        /// details and blob content to Cosmos DB.
-        /// </summary>
-        /// <remarks>This method assumes the Event Grid event corresponds to a BlobCreated event.  It
-        /// parses the blob URL to extract the container and blob name, downloads the blob content,  and stores the
-        /// event metadata and blob content in a Cosmos DB container.</remarks>
-        /// <param name="eventGridEvent">The Event Grid event containing information about the blob creation.  The event must include a valid blob
-        /// URL in its data.</param>
-        /// <returns></returns>
-        [Function("BlobEventGridToBlobAndCosmos")]
-        public async Task Run([EventGridTrigger] EventGridEvent eventGridEvent)
+        public async Task ProcessEventAsync(EventGridEvent eventGridEvent)
         {
             _logger.LogInformation("Received Event Grid event: {Id}", eventGridEvent.Id);
 
@@ -58,8 +38,7 @@ namespace AzureJsonDataFlowFunction.Functions
             }
 
             // Parse blob URL to get container and blob name
-            Uri blobUri = new (eventData.Url);
-            // URL format: https://<account>.blob.core.windows.net/<container>/<blob>
+            Uri blobUri = new(eventData.Url);
             string[] segments = blobUri.AbsolutePath.TrimStart('/').Split('/', 2);
             if (segments.Length < 2)
             {
@@ -79,10 +58,8 @@ namespace AzureJsonDataFlowFunction.Functions
             {
                 await blobClient.DownloadToAsync(downloadStream);
                 downloadStream.Position = 0;
-                using (StreamReader reader = new (downloadStream))
-                {
-                    blobContent = await reader.ReadToEndAsync();
-                }
+                using StreamReader reader = new(downloadStream);
+                blobContent = await reader.ReadToEndAsync();
             }
 
             // Save event info and blob content to Cosmos DB
@@ -95,7 +72,7 @@ namespace AzureJsonDataFlowFunction.Functions
                 BlobUrl = eventData.Url,
                 ContentType = eventData.ContentType,
                 Category = "json",
-                BlobContent = blobContent // the actual JSON from the uploaded blob
+                BlobContent = blobContent
             };
 
             _logger.LogInformation("Saving event data to Cosmos DB: {Id}", eventGridEvent.Id);
