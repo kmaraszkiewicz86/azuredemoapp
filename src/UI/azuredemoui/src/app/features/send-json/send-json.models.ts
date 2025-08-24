@@ -1,4 +1,4 @@
-export interface SendJsonModels {
+export interface JsonModel {
   id: string;
   name: string;
   surname: string;

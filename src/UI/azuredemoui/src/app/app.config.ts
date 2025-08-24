@@ -13,7 +13,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideStore({ sendJson: sendJsonReducer }),
+    provideStore({
+      sendJson: sendJsonReducer,
+      getJson: sendJsonReducer
+    }),
     provideEffects(SendJsonEffects),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideHttpClient(withInterceptorsFromDi())

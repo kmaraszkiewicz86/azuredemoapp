@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SendJsonModels } from './send-json.models';
+import { JsonModel } from './send-json.models';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -12,7 +12,11 @@ export class SendJsonService {
 
   constructor(private http: HttpClient) { }
 
-  sendJsonData(json: SendJsonModels) {
+  sendJsonData(json: JsonModel) {
     return this.http.post(this.jsonfilesApiUrl, json);
+  }
+
+  getJsonData() {
+    return this.http.get<JsonModel[]>(this.jsonfilesApiUrl);
   }
 }

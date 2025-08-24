@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SendJsonModels } from '../../send-json.models';
+import { JsonModel } from '../../send-json.models';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 
@@ -11,9 +11,9 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
   styleUrl: './send-json-view.component.scss'
 })
 export class SendJsonViewComponent {
-  @Input() initialData?: SendJsonModels;
+  @Input() initialData?: JsonModel;
 
-  @Output() formSubmit = new EventEmitter<SendJsonModels>();
+  @Output() formSubmit = new EventEmitter<JsonModel>();
 
   form: FormGroup;
 

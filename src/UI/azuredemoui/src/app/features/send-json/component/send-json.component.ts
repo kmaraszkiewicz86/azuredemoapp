@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../../../app-state';
 import { sendJsonAction } from '../send-json.actions';
-import { SendJsonModels } from '../send-json.models';
+import { JsonModel } from '../send-json.models';
 import { SendJsonViewComponent } from './form/send-json-view.component';
 
 @Component({
@@ -26,7 +26,7 @@ export class SendJsonComponent {
   this.error$ = this.store.select((state: AppState) => state.error);
   }
 
-  handleNotify(event: SendJsonModels) {
+  handleNotify(event: JsonModel) {
     this.store.dispatch(sendJsonAction({ payload: event }));
   }
 }

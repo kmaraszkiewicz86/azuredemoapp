@@ -1,7 +1,7 @@
-import { SendJsonModels } from "./features/send-json/send-json.models";
+import { JsonModel } from "./features/send-json/send-json.models";
 
 export interface AppState {
-  jsonData: SendJsonModels;
+  jsonData: JsonModel;
   loading: boolean;
   error?: string;
 }

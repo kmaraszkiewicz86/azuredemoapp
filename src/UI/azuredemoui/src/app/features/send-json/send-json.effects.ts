@@ -22,3 +22,22 @@ export class SendJsonEffects {
   );
   }
 }
+
+@Injectable()
+export class GetJsonEffects {
+  getJson$;
+
+  constructor(private actions$: Actions, private service: SendJsonService) {
+    this.getJson$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SendJsonActions.getJsonAction),
+      mergeMap(() =>
+        this.service.getJsonData().pipe(
+          map(data => SendJsonActions.getJsonSuccessAction({ data })),
+          catchError(error => of(SendJsonActions.getJsonFailureAction({ error })))
+        )
+      )
+    )
+  );
+  }
+}
