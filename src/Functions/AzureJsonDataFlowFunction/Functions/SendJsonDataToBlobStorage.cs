@@ -19,7 +19,7 @@ namespace AzureJsonDataFlowFunction.Functions
         }
 
         [Function("SendJsonDataToBlobStorage")]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "jsonfiles")] HttpRequestData req)
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "jsonfiles")] HttpRequestData req)
         {
             Result result = await _azureBlobService.SendJsonDataAsync(req);
 

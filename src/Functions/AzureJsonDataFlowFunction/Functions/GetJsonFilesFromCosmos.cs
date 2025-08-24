@@ -39,7 +39,7 @@ namespace AzureJsonDataFlowFunction.Functions
         /// status code of <see cref="HttpStatusCode.OK"/> and a content type of "application/json".</returns>
         [Function("GetJsonFilesFromCosmos")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "jsonfiles")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "jsonfiles")] HttpRequestData req)
         {
             ResultWithValue<List<JsonModel>> results = await _cosmosService.GetDataAsync(req);
 
