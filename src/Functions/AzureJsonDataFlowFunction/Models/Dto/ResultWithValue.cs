@@ -6,20 +6,20 @@ namespace AzureJsonDataFlowFunction.Models.Dto
     {
         public T Value { get; }
 
-        public ResultWithValue(string message, HttpStatusCode statusCode, T value)
-            : base(message, statusCode)
+        public ResultWithValue(bool isSuccess, string message, HttpStatusCode statusCode, T value)
+            : base(isSuccess, message, statusCode)
         {
             Value = value;
         }
 
         public static ResultWithValue<T> Ok(T value) =>
-            new (string.Empty, HttpStatusCode.OK, value);
+            new (true, string.Empty, HttpStatusCode.OK, value);
 
         public new static ResultWithValue<T> BadRequest(string message) =>
-            new (message, HttpStatusCode.BadRequest, default!);
+            new (false, message, HttpStatusCode.BadRequest, default!);
 
         public new static ResultWithValue<T> InternalServerError(string message) =>
-            new (message, HttpStatusCode.InternalServerError, default!);
+            new (false, message, HttpStatusCode.InternalServerError, default!);
     }
 }
         

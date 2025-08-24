@@ -41,7 +41,7 @@ namespace AzureJsonDataFlowFunction.Functions
         public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "jsonfiles")] HttpRequestData req)
         {
-            ResultWithValue<List<SendJsonModels>> results = await _cosmosService.GetDataAsync(req);
+            ResultWithValue<List<JsonModel>> results = await _cosmosService.GetDataAsync(req);
 
             return await req.GetResultAsync(results, HttpStatusCode.BadRequest);
         }

@@ -1,4 +1,5 @@
 using Azure.Messaging.EventGrid;
+using AzureJsonDataFlowFunction.Models.Dto;
 using System.Threading.Tasks;
 
 namespace AzureJsonDataFlowFunction.Services
@@ -8,6 +9,6 @@ namespace AzureJsonDataFlowFunction.Services
     /// </summary>
     public interface IEventGridToCosmosService : IService
     {
-        Task ProcessEventAsync(EventGridEvent eventGridEvent);
+        Task<Result> ProcessEventAsync(EventGridEvent eventGridEvent);
     }
 }

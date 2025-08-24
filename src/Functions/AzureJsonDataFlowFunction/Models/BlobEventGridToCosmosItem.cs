@@ -8,6 +8,6 @@ namespace AzureJsonDataFlowFunction.Models
         public string BlobUrl { get; set; } = string.Empty;
         public string ContentType { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
-        public string BlobContent { get; set; } = string.Empty;
+        public JsonModel JsonModel { get; set; } = default!;
     }
 }

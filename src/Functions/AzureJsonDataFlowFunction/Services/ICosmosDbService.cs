@@ -6,6 +6,6 @@ namespace AzureJsonDataFlowFunction.Services
 {
     public interface ICosmosDbService : IService
     {
-        Task<ResultWithValue<List<SendJsonModels>>> GetDataAsync(HttpRequestData req);
+        Task<ResultWithValue<List<JsonModel>>> GetDataAsync(HttpRequestData req);
     }
 }

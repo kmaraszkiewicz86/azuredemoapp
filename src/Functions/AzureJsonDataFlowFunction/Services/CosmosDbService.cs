@@ -10,7 +10,7 @@ namespace AzureJsonDataFlowFunction.Services
         private const string CosmosDbDatabase = "JsonDb";
         private const string CosmosDbContainer = "JsonFiles";
 
-        public async Task<ResultWithValue<List<SendJsonModels>>> GetDataAsync(HttpRequestData req)
+        public async Task<ResultWithValue<List<JsonModel>>> GetDataAsync(HttpRequestData req)
         {
             try
             {
@@ -28,14 +28,13 @@ namespace AzureJsonDataFlowFunction.Services
                     }
                 }
 
-                //todo: it will be convert later
-                SendJsonModels test = null;//results.Select(r => r.BlobContent).ToList();
+                List<JsonModel> jsonModels = results.Select(r => r.JsonModel).ToList();
 
-                return ResultWithValue<List<SendJsonModels>>.Ok(results);
+                return ResultWithValue<List<JsonModel>>.Ok(jsonModels);
             }
             catch (CosmosException ex)
             {
-                return ResultWithValue<List<SendJsonModels>>.InternalServerError(ex.Message);
+                return ResultWithValue<List<JsonModel>>.InternalServerError(ex.Message);
             }
         }
     }

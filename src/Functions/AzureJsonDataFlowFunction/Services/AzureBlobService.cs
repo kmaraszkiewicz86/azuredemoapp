@@ -36,7 +36,7 @@ namespace AzureJsonDataFlowFunction.Services
                 return Result.InternalServerError("Azure Blob Storage account is not available or credentials are invalid.");
             }
 
-            var data = JsonSerializer.Deserialize<SendJsonModels>(requestBody);
+            var data = JsonSerializer.Deserialize<JsonModel>(requestBody);
 
             _logger.LogInformation("Connect and try to upload the blob item.");
             BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
@@ -50,7 +50,7 @@ namespace AzureJsonDataFlowFunction.Services
             return await UploadBlobItem(requestBody, data, blobClient);
         }
 
-        private async Task<Result> UploadBlobItem(string requestBody, SendJsonModels? data, BlobClient blobClient)
+        private async Task<Result> UploadBlobItem(string requestBody, JsonModel? data, BlobClient blobClient)
         {
             try
             {

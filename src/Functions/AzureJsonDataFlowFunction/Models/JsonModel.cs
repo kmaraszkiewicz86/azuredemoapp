@@ -1,6 +1,6 @@
 namespace AzureJsonDataFlowFunction.Models
 {
-    public class SendJsonModels
+    public class JsonModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

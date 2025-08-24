@@ -6,20 +6,22 @@ namespace AzureJsonDataFlowFunction.Models.Dto
     {
         public string Message { get; } = string.Empty;
         public HttpStatusCode StatusCode { get; }
+        public bool IsSuccess { get; }
 
-        protected Result(string message, HttpStatusCode statusCode)
+        protected Result(bool isSuccess, string message, HttpStatusCode statusCode)
         {
+            IsSuccess = isSuccess;
             Message = message;
             StatusCode = statusCode;
         }
 
         public static Result Ok(string message) =>
-            new (message, HttpStatusCode.OK);
+            new (true, message, HttpStatusCode.OK);
 
         public static Result BadRequest(string message) =>
-            new (message, HttpStatusCode.BadRequest);
+            new (false, message, HttpStatusCode.BadRequest);
 
         public static Result InternalServerError(string message) =>
-            new (message, HttpStatusCode.InternalServerError);
+            new (false, message, HttpStatusCode.InternalServerError);
     }
 }

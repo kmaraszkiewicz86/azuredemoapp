@@ -1,30 +1,22 @@
 using Azure.Messaging.EventGrid;
 using Azure.Storage.Blobs;
+using AzureJsonDataFlowFunction.Functions;
 using AzureJsonDataFlowFunction.Models;
+using AzureJsonDataFlowFunction.Models.Dto;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace AzureJsonDataFlowFunction.Services
 {
-    public class EventGridToCosmosService : IEventGridToCosmosService
+    public class EventGridToCosmosService(BlobServiceClient _blobServiceClient,
+        CosmosClient _cosmosClient,
+        ILogger<BlobEventGridToBlobAndCosmos> _logger) : IEventGridToCosmosService
     {
-        private readonly BlobServiceClient _blobServiceClient;
-        private readonly CosmosClient _cosmosClient;
-        private readonly ILogger<EventGridToCosmosService> _logger;
         private const string CosmosDbDatabase = "JsonDb";
         private const string CosmosDbContainer = "JsonFiles";
 
-        public EventGridToCosmosService(
-            BlobServiceClient blobServiceClient,
-            CosmosClient cosmosClient,
-            ILogger<EventGridToCosmosService> logger)
-        {
-            _blobServiceClient = blobServiceClient;
-            _cosmosClient = cosmosClient;
-            _logger = logger;
-        }
-
-        public async Task ProcessEventAsync(EventGridEvent eventGridEvent)
+        public async Task<Result> ProcessEventAsync(EventGridEvent eventGridEvent)
         {
             _logger.LogInformation("Received Event Grid event: {Id}", eventGridEvent.Id);
 
@@ -34,7 +26,7 @@ namespace AzureJsonDataFlowFunction.Services
             if (eventData is null)
             {
                 _logger.LogError("Event data is null or not of expected type BlobCreatedEventData.");
-                return;
+                return Result.InternalServerError("Event data is null or not of expected type BlobCreatedEventData.");
             }
 
             // Parse blob URL to get container and blob name
@@ -43,7 +35,7 @@ namespace AzureJsonDataFlowFunction.Services
             if (segments.Length < 2)
             {
                 _logger.LogError("Invalid blob URL: {Url}", eventData.Url);
-                return;
+                return Result.InternalServerError($"Invalid blob URL: {eventData.Url}");
             }
 
             string containerName = segments[0];
@@ -65,6 +57,12 @@ namespace AzureJsonDataFlowFunction.Services
             }
 
             _logger.LogInformation($"Downloaded the blob content: {blobContent}");
+            JsonModel? sendJsonModels = JsonSerializer.Deserialize<JsonModel>(blobContent);
+
+            if (sendJsonModels is null)
+            {
+                return Result.InternalServerError("Deserialized blob content is null or invalid.");
+            }
 
             // Save event info and blob content to Cosmos DB
             Container cosmosContainer = _cosmosClient.GetContainer(CosmosDbDatabase, CosmosDbContainer);
@@ -76,11 +74,13 @@ namespace AzureJsonDataFlowFunction.Services
                 BlobUrl = eventData.Url,
                 ContentType = eventData.ContentType,
                 Category = "json",
-                BlobContent = blobContent
+                JsonModel = sendJsonModels!
             };
 
             _logger.LogInformation("Saving event data to Cosmos DB: {Id}", eventGridEvent.Id);
             await cosmosContainer.CreateItemAsync(cosmosItem, new PartitionKey(eventGridEvent.EventType));
+
+            return Result.Ok("Event processed and data saved to Cosmos DB successfully.");
         }
     }
 }
