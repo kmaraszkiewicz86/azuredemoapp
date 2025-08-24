@@ -1,4 +1,6 @@
 ﻿using AzureJsonDataFlowFunction.Extensions;
+using AzureJsonDataFlowFunction.Models;
+using AzureJsonDataFlowFunction.Models.Dto;
 using AzureJsonDataFlowFunction.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -39,7 +41,7 @@ namespace AzureJsonDataFlowFunction.Functions
         public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "jsonfiles")] HttpRequestData req)
         {
-            List<dynamic> results = await _cosmosService.GetDataAsync(req);
+            ResultWithValue<List<SendJsonModels>> results = await _cosmosService.GetDataAsync(req);
 
             return await req.GetResultAsync(results, HttpStatusCode.BadRequest);
         }

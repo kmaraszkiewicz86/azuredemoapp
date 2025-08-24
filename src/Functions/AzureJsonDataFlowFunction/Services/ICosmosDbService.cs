@@ -1,9 +1,11 @@
-﻿using Microsoft.Azure.Functions.Worker.Http;
+﻿using AzureJsonDataFlowFunction.Models;
+using AzureJsonDataFlowFunction.Models.Dto;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace AzureJsonDataFlowFunction.Services
 {
     public interface ICosmosDbService : IService
     {
-        Task<List<dynamic>> GetDataAsync(HttpRequestData req);
+        Task<ResultWithValue<List<SendJsonModels>>> GetDataAsync(HttpRequestData req);
     }
 }
