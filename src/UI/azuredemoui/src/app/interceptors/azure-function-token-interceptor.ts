@@ -20,6 +20,6 @@ export class AzureFunctionTokenInterceptor implements HttpInterceptor {
 
   private appendTokenToUrl(url: string, token: string): string {
     const separator = url.includes('?') ? '&' : '?';
-    return `${url}${separator}token=${token}`;
+    return `${url}${separator}code=${token}`;
   }
 }
