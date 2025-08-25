@@ -19,41 +19,45 @@ namespace AzureJsonDataFlowFunction.Services
 
         public async Task<Result> SendJsonDataAsync(HttpRequestData req)
         {
-            string? requestBody = await req.ReadAsStringAsync();
-
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-            _logger.LogInformation($"Get request body: {requestBody ?? "empty"}.");
-
-            if (string.IsNullOrWhiteSpace(requestBody))
+            try
             {
-                _logger.LogError("Request body cannot be empty.");
-                return Result.BadRequest("Request body cannot be empty.");
+                string? requestBody = await req.ReadAsStringAsync();
+
+                _logger.LogInformation("C# HTTP trigger function processed a request.");
+                _logger.LogInformation($"Get request body: {requestBody ?? "empty"}.");
+
+                if (string.IsNullOrWhiteSpace(requestBody))
+                {
+                    _logger.LogError("Request body cannot be empty.");
+                    return Result.BadRequest("Request body cannot be empty.");
+                }
+
+                if (!await CheckBlobAccountAvailableAsync(req))
+                {
+                    _logger.LogError("Azure Blob Storage account is not available or credentials are invalid.");
+                    return Result.InternalServerError("Azure Blob Storage account is not available or credentials are invalid.");
+                }
+
+                _logger.LogInformation("Connect and try to upload the blob item.");
+                BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
+
+                await containerClient.CreateIfNotExistsAsync();
+
+                var blobName = $"{Guid.NewGuid()}.json";
+
+                BlobClient blobClient = containerClient.GetBlobClient(blobName);
+
+                return await UploadBlobItem(requestBody, blobClient);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while processing the request.");
+                return Result.InternalServerError("An unexpected error occurred.");
             }
 
-            if (!await CheckBlobAccountAvailableAsync(req))
-            {
-                _logger.LogError("Azure Blob Storage account is not available or credentials are invalid.");
-                return Result.InternalServerError("Azure Blob Storage account is not available or credentials are invalid.");
-            }
-
-            var data = JsonSerializer.Deserialize<JsonModel>(requestBody, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-
-            _logger.LogInformation("Connect and try to upload the blob item.");
-            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(ContainerName);
-
-            await containerClient.CreateIfNotExistsAsync();
-
-            var blobName = $"{Guid.NewGuid()}.json";
-
-            BlobClient blobClient = containerClient.GetBlobClient(blobName);
-
-            return await UploadBlobItem(requestBody, data, blobClient);
         }
 
-        private async Task<Result> UploadBlobItem(string requestBody, JsonModel? data, BlobClient blobClient)
+        private async Task<Result> UploadBlobItem(string requestBody, BlobClient blobClient)
         {
             try
             {
@@ -80,9 +84,7 @@ namespace AzureJsonDataFlowFunction.Services
                 return Result.InternalServerError("Failed to upload blob.");
             }
 
-            var name = data?.Name ?? "unknown";
-
-            return Result.Ok($"Received JSON for {name}. Everything is OK.!");
+            return Result.Ok("Everything is OK.!");
         }
 
         private async Task<bool> CheckBlobAccountAvailableAsync(HttpRequestData req)

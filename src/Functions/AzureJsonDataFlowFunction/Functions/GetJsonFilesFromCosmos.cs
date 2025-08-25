@@ -41,9 +41,20 @@ namespace AzureJsonDataFlowFunction.Functions
         public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "jsonfiles")] HttpRequestData req)
         {
-            ResultWithValue<List<JsonModel>> results = await _cosmosService.GetDataAsync(req);
+            try
+            {
+                _logger.LogInformation("C# HTTP trigger function processed a request.");
+                ResultWithValue<List<JsonModel>> result = await _cosmosService.GetDataAsync(req);
 
-            return await req.GetResultAsync(results, HttpStatusCode.BadRequest);
+                return await req.ToHttpResponseDataAsync(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while processing the request.");
+
+                return await req.ToHttpResponseDataAsync(Result.InternalServerError("An error occurred while processing the request"));
+            }
+
         }
     }
 }

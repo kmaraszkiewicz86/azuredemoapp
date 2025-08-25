@@ -30,8 +30,8 @@ namespace AzureJsonDataFlowFunction.Extensions
             services.AddSingleton<CosmosClient>(serviceProvider =>
             {
                 var config = serviceProvider.GetRequiredService<IConfiguration>();
-                string endpointUri = config["CosmosDb:Endpoint"]!;
-                string primaryKey = config["CosmosDb:PrimaryKey"]!;
+                string endpointUri = "https://demokmar.documents.azure.com:443/";// config["CosmosDb:Endpoint"]!;
+                string primaryKey = "8t5AaKP8ky799xvUAfeXZ9W8wEs8uIYqr2LFMcD914DJustbmoEMbqUeKbGiMFWhtY7arypn7GVNACDbdn6m9w==";// config["CosmosDb:PrimaryKey"]!;
                 return new CosmosClient(endpointUri, primaryKey);
             });
 

@@ -1,8 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace AzureJsonDataFlowFunction.Models
 {
     public class BlobEventGridToCosmosItem
     {
-        public string Id { get; set; } = string.Empty;
+        public string id { get; set; } = string.Empty;
         public string EventType { get; set; } = string.Empty;
         public DateTimeOffset EventTime { get; set; }
         public string BlobUrl { get; set; } = string.Empty;

@@ -2,7 +2,7 @@
 	<div class="alert alert-info">Loading...</div>
 </div>
 <ng-template #notLoading>
-	<div *ngIf="items.length === 0; else showTable">
+	<div *ngIf="items!.length === 0; else showTable">
 		<div class="alert alert-warning">Brak danych</div>
 	</div>
 	<ng-template #showTable>

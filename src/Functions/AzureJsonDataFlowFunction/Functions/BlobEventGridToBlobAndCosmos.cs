@@ -34,15 +34,23 @@ namespace AzureJsonDataFlowFunction.Functions
         [Function("BlobEventGridToBlobAndCosmos")]
         public async Task Run([EventGridTrigger] EventGridEvent eventGridEvent)
         {
-            Result result = await _eventGridToCosmosService.ProcessEventAsync(eventGridEvent);
+            try
+            {
+                _logger.LogInformation("Starting processing an event grid...");
+                Result result = await _eventGridToCosmosService.ProcessEventAsync(eventGridEvent);
 
-            if (result.IsSuccess)
-            {
-                _logger.LogInformation("Event processed and data stored successfully.");
+                if (result.IsSuccess)
+                {
+                    _logger.LogInformation("Event processed and data stored successfully.");
+                }
+                else
+                {
+                    _logger.LogError($"Failed to process event with status code: {result.StatusCode} and message {result.Message}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogError($"Failed to process event with status code: {result.StatusCode} and message {result.Message}");
+                _logger.LogError($"Error logging function trigger: {ex.Message}");
             }
         }
     }

@@ -23,7 +23,7 @@ namespace AzureJsonDataFlowFunction.Functions
         {
             Result result = await _azureBlobService.SendJsonDataAsync(req);
 
-            return await result.ToHttpResponseDataAsync(req);
+            return await req.ToHttpResponseDataAsync(result);
         }
     }
 }

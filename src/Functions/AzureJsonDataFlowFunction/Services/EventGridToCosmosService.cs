@@ -74,7 +74,7 @@ namespace AzureJsonDataFlowFunction.Services
             Container cosmosContainer = _cosmosClient.GetContainer(CosmosDbDatabase, CosmosDbContainer);
             BlobEventGridToCosmosItem cosmosItem = new()
             {
-                Id = eventGridEvent.Id,
+                id = eventGridEvent.Id,
                 EventType = eventGridEvent.EventType,
                 EventTime = eventGridEvent.EventTime,
                 BlobUrl = eventData.Url,
