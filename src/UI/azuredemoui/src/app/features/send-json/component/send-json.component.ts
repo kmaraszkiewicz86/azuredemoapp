@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -16,13 +16,13 @@ import { SendJsonListViewComponent } from './list/send-json-list-view.component'
   templateUrl: './send-json.component.html',
   styleUrl: './send-json.component.scss',
 })
-export class SendJsonComponent {
+export class SendJsonComponent implements OnInit {
   items$: Observable<JsonModel[] | null>;
 
   formLoading$: Observable<boolean>;
   listLoading$: Observable<boolean>;
-  formError$: Observable<string | undefined>;
-  listError$: Observable<string | undefined>;
+  formError$: Observable<string | null>;
+  listError$: Observable<string | null>;
 
   constructor(private store: Store<AppState>) {
     this.formLoading$ = this.store.select(
@@ -41,6 +41,14 @@ export class SendJsonComponent {
     this.items$ = this.store.select(
       (state: AppState) => state.sendJson.get.jsonDataItems
     );
+  }
+
+  ngOnInit(): void {
+    this.loadItems();
+  }
+
+  loadItems() {
+    this.store.dispatch(getJsonAction());
   }
 
   handleNotify(event: JsonModel) {

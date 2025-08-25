@@ -5,13 +5,13 @@ import { JsonModel } from '../../send-json.models';
 export interface GetJsonState {
   jsonDataItems: JsonModel[] | null;
   loading: boolean;
-  error?: string;
+  error: string | null;
 }
 
 export const getInitialState: GetJsonState = {
   jsonDataItems: [],
   loading: false,
-  error: undefined
+  error: null
 };
 
 export const getJsonReducer = createReducer(
@@ -19,7 +19,7 @@ export const getJsonReducer = createReducer(
   on(getJsonAction.getJsonAction, (state) => ({
     ...state,
     loading: true,
-    error: undefined,
+    error: null,
   })),
   on(getJsonAction.getJsonSuccessAction, (state, { data }) => ({
     ...state,

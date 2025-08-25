@@ -1,15 +1,28 @@
 <h1>Send json view</h1>
 
-<!-- Main content shown when not loading -->
-<app-send-json-view
-  (formSubmit)="handleNotify($event)"
-  [loading]="formLoading$ | async"
-  [error]="formError$ | async"
-></app-send-json-view>
+<div class="row mb-3">
+  <div class="col">
+    <button class="btn btn-primary" (click)="loadItems()">Odśwież</button>
+  </div>
+</div>
 
-<app-send-json-list-view
-  (formSubmit)="handleNotify($event)"
-  [loading]="listLoading$ | async"
-  [error]="listError$ | async"
-  [items]="items$ | async"
-></app-send-json-list-view>
+<div class="row mb-3">
+  <div class="col">
+    <app-send-json-view
+      (formSubmit)="handleNotify($event)"
+      [loading]="formLoading$ | async"
+      [error]="formError$ | async"
+    ></app-send-json-view>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <app-send-json-list-view
+      (formSubmit)="handleNotify($event)"
+      [loading]="listLoading$ | async"
+      [error]="listError$ | async"
+      [items]="items$ | async"
+    ></app-send-json-list-view>
+  </div>
+</div>

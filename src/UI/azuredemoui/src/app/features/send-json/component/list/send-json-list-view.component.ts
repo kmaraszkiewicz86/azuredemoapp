@@ -13,5 +13,5 @@ import { CommonModule } from '@angular/common';
 export class SendJsonListViewComponent {
   @Input() loading: boolean = false;
   @Input() error: string | null = null;
-  @Input() items: JsonModel[] = [];
+  @Input() items: JsonModel[] | null = [];
 }
