@@ -19,9 +19,13 @@ namespace AzureJsonDataFlowFunction.Services
         public async Task<Result> ProcessEventAsync(EventGridEvent eventGridEvent)
         {
             _logger.LogInformation("Received Event Grid event: {Id}", eventGridEvent.Id);
+            _logger.LogInformation("Data to process: {EventType}", JsonSerializer.Serialize(eventGridEvent));
 
             // Parse event data (assumes BlobCreated event)
-            BlobCreatedEventData? eventData = eventGridEvent.Data.ToObjectFromJson<BlobCreatedEventData>();
+            BlobCreatedEventData? eventData = eventGridEvent.Data.ToObjectFromJson<BlobCreatedEventData>(new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             if (eventData is null)
             {
@@ -29,7 +33,7 @@ namespace AzureJsonDataFlowFunction.Services
                 return Result.InternalServerError("Event data is null or not of expected type BlobCreatedEventData.");
             }
 
-            _logger.LogError("Parse blob URL ({Url}) to get container and blob name.", eventData?.Url ?? "Invalid url");
+            _logger.LogInformation("Parse blob URL ({Url}) to get container and blob name.", eventData?.Url ?? "Invalid url");
 
             // Parse blob URL to get container and blob name
             Uri blobUri = new(eventData.Url);
