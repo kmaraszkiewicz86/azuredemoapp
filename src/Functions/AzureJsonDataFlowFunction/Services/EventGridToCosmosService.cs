@@ -29,6 +29,8 @@ namespace AzureJsonDataFlowFunction.Services
                 return Result.InternalServerError("Event data is null or not of expected type BlobCreatedEventData.");
             }
 
+            _logger.LogError("Parse blob URL ({Url}) to get container and blob name.", eventData?.Url ?? "Invalid url");
+
             // Parse blob URL to get container and blob name
             Uri blobUri = new(eventData.Url);
             string[] segments = blobUri.AbsolutePath.TrimStart('/').Split('/', 2);
