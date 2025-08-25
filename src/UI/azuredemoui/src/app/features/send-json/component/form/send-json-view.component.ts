@@ -1,17 +1,24 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JsonModel } from '../../send-json.models';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-send-json-view',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './send-json-view.component.html',
-  styleUrl: './send-json-view.component.scss'
+  styleUrl: './send-json-view.component.scss',
 })
 export class SendJsonViewComponent {
   @Input() initialData?: JsonModel;
+  @Input() loading: boolean | null = false;
+  @Input() error?: string | null;
 
   @Output() formSubmit = new EventEmitter<JsonModel>();
 

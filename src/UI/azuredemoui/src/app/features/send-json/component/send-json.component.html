@@ -1,10 +1,15 @@
+<h1>Send json view</h1>
 
-        <h1>Send json view</h1>
+<!-- Main content shown when not loading -->
+<app-send-json-view
+  (formSubmit)="handleNotify($event)"
+  [loading]="formLoading$ | async"
+  [error]="formError$ | async"
+></app-send-json-view>
 
-        <!-- Loading indicator -->
-        <div *ngIf="loading$ | async; else formBlock">Loading...</div>
-
-        <!-- Main content shown when not loading -->
-        <ng-template #formBlock>
-            <app-send-json-view (formSubmit)="handleNotify($event)"></app-send-json-view>
-        </ng-template>
+<app-send-json-list-view
+  (formSubmit)="handleNotify($event)"
+  [loading]="listLoading$ | async"
+  [error]="listError$ | async"
+  [items]="items$ | async"
+></app-send-json-list-view>

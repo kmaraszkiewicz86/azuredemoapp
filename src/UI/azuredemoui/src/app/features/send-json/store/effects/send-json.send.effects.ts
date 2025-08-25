@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { SendJsonService } from './send-json.service';
-import * as SendJsonActions from './send-json.actions';
+import { SendJsonService } from '../../send-json.service';
+import * as SendJsonActions from '../actions/send-json.send.actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
 
 @Injectable()
@@ -16,25 +16,6 @@ export class SendJsonEffects {
         this.service.sendJsonData(payload).pipe(
           map(() => SendJsonActions.sendJsonSuccessAction()),
           catchError(error => of(SendJsonActions.sendJsonFailureAction({ error })))
-        )
-      )
-    )
-  );
-  }
-}
-
-@Injectable()
-export class GetJsonEffects {
-  getJson$;
-
-  constructor(private actions$: Actions, private service: SendJsonService) {
-    this.getJson$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(SendJsonActions.getJsonAction),
-      mergeMap(() =>
-        this.service.getJsonData().pipe(
-          map(data => SendJsonActions.getJsonSuccessAction({ data })),
-          catchError(error => of(SendJsonActions.getJsonFailureAction({ error })))
         )
       )
     )
