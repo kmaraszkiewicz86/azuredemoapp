@@ -130,7 +130,7 @@ This project is an Angular-based user interface for interacting with Azure Funct
    ```
    npm install
    ```
-2. Configure environment variables in `[src/environments/environment.ts]([http://localhost:4200](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/UI/azuredemoui/src/app/environments/environment.ts))`.
+2. Configure environment variables in [src/environments/environment.ts]([http://localhost:4200](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/UI/azuredemoui/src/app/environments/environment.ts)).
 3. Run the development server:
    ```
    ng serve
