@@ -19,7 +19,7 @@ This project demonstrates how Azure Functions can work with Event Grid and HTTP 
 
 ### 1. SendJsonToBlobStorage
 
-**Link** ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/Functions/AzureJsonDataFlowFunction/Functions/SendJsonDataToBlobStorage.cs))
+**Link** ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/Functions/AzureJsonDataFlowFunction/Functions/SendJsonDataToBlobStorage.cs))  
 **Namespace:** `SendJsonToBlobStorageFunction`  
 **Trigger:** HTTP POST  
 **Description:**  
@@ -35,7 +35,7 @@ Receives a JSON payload via HTTP POST and saves it as a `.json` file in the `jso
 
 ### 2. BlobEventGridToBlobAndCosmos
 
-**Link** ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/Functions/AzureJsonDataFlowFunction/Functions/BlobEventGridToBlobAndCosmos.cs))
+**Link** ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/Functions/AzureJsonDataFlowFunction/Functions/BlobEventGridToBlobAndCosmos.cs))  
 **Namespace:** `BlobEventGridToBlobAndCosmosFunction`  
 **Trigger:** Event Grid (BlobCreated event)  
 **Description:**  
@@ -50,7 +50,7 @@ Triggered when a new blob is created in storage. Downloads the blob content and 
 
 ### 3. GetJsonFilesFromCosmos
 
-**Link** ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/Functions/AzureJsonDataFlowFunction/Functions/GetJsonFilesFromCosmos.cs))
+**Link** ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/Functions/AzureJsonDataFlowFunction/Functions/GetJsonFilesFromCosmos.cs))  
 **Namespace:** `GetJsonFilesFromCosmos`  
 **Trigger:** HTTP GET  
 **Description:**  
