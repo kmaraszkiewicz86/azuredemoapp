@@ -18,17 +18,15 @@ namespace AzureJsonDataFlowFunction.Services
 
                 var query = "SELECT * FROM c";
                 var iterator = container.GetItemQueryIterator<BlobEventGridToCosmosItem>(query);
-                List<BlobEventGridToCosmosItem> results = new ();
+                List<JsonModel> jsonModels = new ();
 
                 while (iterator.HasMoreResults)
                 {
                     foreach (var item in await iterator.ReadNextAsync())
                     {
-                        results.Add(item);
+                        jsonModels.Add(item.JsonModel);
                     }
                 }
-
-                List<JsonModel> jsonModels = results.Select(r => r.JsonModel).ToList();
 
                 return ResultWithValue<List<JsonModel>>.Ok(jsonModels);
             }

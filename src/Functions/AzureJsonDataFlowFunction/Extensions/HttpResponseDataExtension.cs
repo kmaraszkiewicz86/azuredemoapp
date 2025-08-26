@@ -12,7 +12,10 @@ namespace AzureJsonDataFlowFunction.Extensions
         /// </summary>
         public static async Task<HttpResponseData> ToHttpResponseDataAsync<TResultParam>(this HttpRequestData req, ResultWithValue<TResultParam> result)
         {
-            return await ToHttpResponseDataAsync(req, result);
+            var response = req.CreateResponse(result.StatusCode);
+            response.Headers.Add("Content-Type", "application/json");
+            await response.WriteStringAsync(JsonSerializer.Serialize(result.Value));
+            return response;
         }
 
         /// <summary>

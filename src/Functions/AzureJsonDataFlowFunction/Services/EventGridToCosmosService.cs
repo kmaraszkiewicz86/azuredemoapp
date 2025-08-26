@@ -36,7 +36,7 @@ namespace AzureJsonDataFlowFunction.Services
             _logger.LogInformation("Parse blob URL ({Url}) to get container and blob name.", eventData?.Url ?? "Invalid url");
 
             // Parse blob URL to get container and blob name
-            Uri blobUri = new(eventData.Url);
+            Uri blobUri = new(eventData!.Url);
             string[] segments = blobUri.AbsolutePath.TrimStart('/').Split('/', 2);
             if (segments.Length < 2)
             {
@@ -63,7 +63,10 @@ namespace AzureJsonDataFlowFunction.Services
             }
 
             _logger.LogInformation($"Downloaded the blob content: {blobContent}");
-            JsonModel? sendJsonModels = JsonSerializer.Deserialize<JsonModel>(blobContent);
+            JsonModel? sendJsonModels = JsonSerializer.Deserialize<JsonModel>(blobContent, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             if (sendJsonModels is null)
             {
