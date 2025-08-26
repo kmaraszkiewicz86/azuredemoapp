@@ -1,5 +1,5 @@
 export interface JsonModel {
-  id: string;
+  id: number;
   name: string;
   surname: string;
   age: number;

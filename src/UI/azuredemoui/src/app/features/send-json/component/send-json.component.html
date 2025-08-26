@@ -19,7 +19,6 @@
 <div class="row">
   <div class="col">
     <app-send-json-list-view
-      (formSubmit)="handleNotify($event)"
       [loading]="listLoading$ | async"
       [error]="listError$ | async"
       [items]="items$ | async"

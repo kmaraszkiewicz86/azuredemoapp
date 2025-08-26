@@ -26,7 +26,7 @@ export class SendJsonViewComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      id: ['', Validators.required],
+      id: [null, [Validators.required, Validators.min(1)]],
       name: ['', Validators.required],
       surname: ['', Validators.required],
       age: [null, [Validators.required, Validators.min(0)]],
