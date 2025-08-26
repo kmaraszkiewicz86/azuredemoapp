@@ -15,7 +15,7 @@ This project demonstrates how Azure Functions can work with Event Grid and HTTP 
 
 ---
 
-## Azure Functions Overview
+## Azure Functions API Overview
 
 ### 1. SendJsonToBlobStorage
 
@@ -101,6 +101,54 @@ Provides an HTTP endpoint to retrieve all JSON documents stored in the `JsonFile
 2. Configure Blob Storage, Cosmos DB, and Event Grid as required.
 3. Use the HTTP POST endpoint to upload JSON files.
 4. Use the HTTP GET endpoint to retrieve stored JSON data.
+
+---
+
+# Azure Functions Demo UI (Angular)
+
+This project is an Angular-based user interface for interacting with Azure Functions. It demonstrates integration with a backend API, state management using NgRx, and modern Angular features such as standalone components and HTTP interceptors.
+
+## Features
+
+- Fetching and displaying JSON data from Azure Functions
+- Sending data to the backend via HTTP POST requests
+- State management with NgRx Store and Effects
+- Automatic conversion of API response keys to camelCase using a global HTTP interceptor
+- Modular and maintainable code structure
+- Responsive UI with loading and error handling
+
+## Technologies
+
+- Angular
+- NgRx (Store, Effects)
+- RxJS
+- Bootstrap (for UI styling)
+
+## Getting Started
+
+1. Install dependencies:
+   ```
+   npm install
+   ```
+2. Configure environment variables in `[src/environments/environment.ts]([http://localhost:4200](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/UI/azuredemoui/src/app/environments/environment.ts))`.
+3. Run the development server:
+   ```
+   ng serve
+   ```
+4. Open [http://localhost:4200](http://localhost:4200) in your browser.
+
+## Project Structure
+
+- `src/app/features/send-json` – Components and services for sending and displaying JSON data
+- `src/app/interceptors` – HTTP interceptors (e.g., camelCase conversion)
+- `src/app/store` – NgRx actions, reducers, and effects
+
+## Notes
+
+- The UI expects the backend to return data in PascalCase; all responses are automatically mapped to camelCase.
+- Make sure to provide the correct Azure Function URL and token in the environment configuration.
+
+---
 
 ---
 
