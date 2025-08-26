@@ -19,6 +19,7 @@ This project demonstrates how Azure Functions can work with Event Grid and HTTP 
 
 ### 1. SendJsonToBlobStorage
 
+**Link** ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/Functions/AzureJsonDataFlowFunction/Functions/SendJsonDataToBlobStorage.cs))
 **Namespace:** `SendJsonToBlobStorageFunction`  
 **Trigger:** HTTP POST  
 **Description:**  
@@ -34,6 +35,7 @@ Receives a JSON payload via HTTP POST and saves it as a `.json` file in the `jso
 
 ### 2. BlobEventGridToBlobAndCosmos
 
+**Link** ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/Functions/AzureJsonDataFlowFunction/Functions/BlobEventGridToBlobAndCosmos.cs))
 **Namespace:** `BlobEventGridToBlobAndCosmosFunction`  
 **Trigger:** Event Grid (BlobCreated event)  
 **Description:**  
@@ -48,7 +50,8 @@ Triggered when a new blob is created in storage. Downloads the blob content and 
 
 ### 3. GetJsonFilesFromCosmos
 
-**Namespace:** `BlobEventGridToBlobAndCosmosFunction`  
+**Link** ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/Functions/AzureJsonDataFlowFunction/Functions/GetJsonFilesFromCosmos.cs))
+**Namespace:** `GetJsonFilesFromCosmos`  
 **Trigger:** HTTP GET  
 **Description:**  
 Provides an HTTP endpoint to retrieve all JSON documents stored in the `JsonFiles` Cosmos DB container.
@@ -130,7 +133,7 @@ This project is an Angular-based user interface for interacting with Azure Funct
    ```
    npm install
    ```
-2. Configure environment variables in [src/environments/environment.ts]([http://localhost:4200](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/UI/azuredemoui/src/app/environments/environment.ts)).
+2. Configure environment variables in [src/environments/environment.ts](https://github.com/kmaraszkiewicz86/azuredemoapp/blob/main/src/UI/azuredemoui/src/app/environments/environment.ts).
 3. Run the development server:
    ```
    ng serve
@@ -139,9 +142,9 @@ This project is an Angular-based user interface for interacting with Azure Funct
 
 ## Project Structure
 
-- `src/app/features/send-json` – Components and services for sending and displaying JSON data
-- `src/app/interceptors` – HTTP interceptors (e.g., camelCase conversion)
-- `src/app/store` – NgRx actions, reducers, and effects
+- `src/app/features/send-json` ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/tree/main/src/UI/azuredemoui/src/app/features/send-json)) – Components and services for sending and displaying JSON data
+- `src/app/interceptors` ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/tree/main/src/UI/azuredemoui/src/app/interceptors)) – HTTP interceptors (e.g., camelCase conversion)
+- `src/app/store` ([link](https://github.com/kmaraszkiewicz86/azuredemoapp/tree/main/src/UI/azuredemoui/src/app/features/send-json/store)) – NgRx actions, reducers, and effects
 
 ## Notes
 
