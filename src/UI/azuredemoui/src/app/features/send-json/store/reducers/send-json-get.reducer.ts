@@ -20,15 +20,18 @@ export const getJsonReducer = createReducer(
     ...state,
     loading: true,
     error: null,
+    jsonDataItems: []
   })),
   on(getJsonAction.getJsonSuccessAction, (state, { data }) => ({
     ...state,
     loading: false,
-    jsonData: data,
+    error: null,
+    jsonDataItems: data
   })),
   on(getJsonAction.getJsonFailureAction, (state, { error }) => ({
     ...state,
     loading: false,
     error,
+    jsonDataItems: []
   }))
 );

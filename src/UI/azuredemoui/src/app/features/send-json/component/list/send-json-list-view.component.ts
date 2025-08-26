@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { JsonModel } from '../../send-json.models';
 import { CommonModule } from '@angular/common';
 
@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
   templateUrl: './send-json-list-view.component.html',
-  styleUrl: './send-json-list-view.component.scss'
+  styleUrl: './send-json-list-view.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SendJsonListViewComponent {
   @Input() loading: boolean | null = false;
