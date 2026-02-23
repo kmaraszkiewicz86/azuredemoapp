@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36127.28
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureJsonDataFlowFunction", "..\Functions\AzureJsonDataFlowFunction\AzureJsonDataFlowFunction.csproj", "{A739D9B4-9A37-22C3-B2BB-D7BD213506AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureJsonDataFlowFunction", "Functions\AzureJsonDataFlowFunction\AzureJsonDataFlowFunction.csproj", "{A739D9B4-9A37-22C3-B2BB-D7BD213506AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
