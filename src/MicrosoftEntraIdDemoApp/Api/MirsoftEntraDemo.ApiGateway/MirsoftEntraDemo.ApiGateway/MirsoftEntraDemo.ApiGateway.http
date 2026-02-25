@@ -1,0 +1,6 @@
+@MirsoftEntraDemo.ApiGateway_HostAddress = http://localhost:5275
+
+GET {{MirsoftEntraDemo.ApiGateway_HostAddress}}/api/test/weatherforecast
+Accept: application/json
+
+###
