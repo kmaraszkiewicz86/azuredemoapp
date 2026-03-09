@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Kmaraszkiewicz86.SimpleCqrs" Version="0.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="4.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.4" />
   </ItemGroup>
 
