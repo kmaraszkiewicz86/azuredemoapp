@@ -1,0 +1,11 @@
+<div class="login-container">
+  @if (message) {
+    <div class="message" [class.error]="isError" [class.success]="!isError">
+      {{ message }}
+    </div>
+  }
+
+  <h2>Logowanie</h2>
+
+  <button (click)="onLogin()">Zaloguj się</button>
+</div>
