@@ -13,10 +13,22 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin() //this is only demo poprouse, in production you should specify allowed origins!
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
+
+app.UseCors();
 
 var frontendUrl = $"{app.Configuration["FrontendUrl"]}usercheck"
     ?? throw new InvalidOperationException("The parameter FrontendUrl is empty. Check appsettings.json.");
