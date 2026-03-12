@@ -26,16 +26,24 @@ jobs:
       - name: Replace Frontend URL for production
         shell: pwsh
         run: |
-          $file = "src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway/appsettings.json"
+          $file = "src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway/appsettings.json"
           $json = Get-Content $file -Raw | ConvertFrom-Json
           $json.FrontendUrl = "https://witty-meadow-0ebb9c603.1.azurestaticapps.net/"
           $json | ConvertTo-Json -Depth 10 | Set-Content $file
 
+      - name: Replace Application URL for production
+        shell: pwsh
+        run: |
+          $file = "src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway/Properties/launchSettings.json"
+          $json = Get-Content $file -Raw | ConvertFrom-Json
+          $json.profiles.https.applicationUrl = "https://app-entra-demo-api-gateway-cff7bjdec5dxahe3.canadacentral-01.azurewebsites.net/"
+          $json | ConvertTo-Json -Depth 10 | Set-Content $file
+
       - name: Build with dotnet
-        run: dotnet build src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway.csproj --configuration Release
+        run: dotnet build src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
