@@ -18,10 +18,13 @@ builder.Services.AddReverseProxy()
 
 var app = builder.Build();
 
+var frontendUrl = $"{app.Configuration["FrontendUrl"]}/usercheck"
+    ?? throw new InvalidOperationException("The parameter FrontendUrl is empty. Check appsettings.json.");
+
 app.MapGet("/login", () =>
 {
     return Results.Challenge(
-        new AuthenticationProperties { RedirectUri = "http://localhost:4200/" },
+        new AuthenticationProperties { RedirectUri = frontendUrl },
         [ OpenIdConnectDefaults.AuthenticationScheme ]
     );
 });
@@ -38,7 +41,7 @@ app.MapGet("/bff/user", (ClaimsPrincipal user) =>
 app.MapGet("/logout", () =>
 {
     return Results.SignOut(
-            new AuthenticationProperties { RedirectUri = "http://localhost:4200/" },
+            new AuthenticationProperties { RedirectUri = frontendUrl },
             [
                 CookieAuthenticationDefaults.AuthenticationScheme, 
                 OpenIdConnectDefaults.AuthenticationScheme

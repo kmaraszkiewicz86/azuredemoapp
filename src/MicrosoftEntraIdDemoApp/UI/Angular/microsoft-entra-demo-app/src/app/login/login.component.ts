@@ -15,11 +15,11 @@ export class LoginComponent {
 
   onLogin(): void {
     try {
-      this.message = 'Witaj test, zalogowałeś się poprawnie!';
+      this.message = 'Login successful. Redirecting...';
       this.isError = false;
       this.loginService.login();
     } catch {
-      this.message = 'Logowanie nie udane';
+      this.message = 'Login failed.';
       this.isError = true;
     }
   }
