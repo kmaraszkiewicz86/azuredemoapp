@@ -1,3 +1,3 @@
 export const environment = {
-  apiHost: 'https://localhost:7161',
+  apiHost: 'https://app-entra-demo-api-gateway-cff7bjdec5dxahe3.canadacentral-01.azurewebsites.net/',
 };
