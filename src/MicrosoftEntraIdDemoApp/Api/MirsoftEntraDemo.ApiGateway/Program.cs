@@ -17,9 +17,10 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin() //this is only demo poprouse, in production you should specify allowed origins!
+        policy.SetIsOriginAllowed(_ => true) //this is only demo purpose, in production you should specify allowed origins!
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
