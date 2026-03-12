@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -12,11 +12,11 @@ import { UserCheckService } from './usercheck.service';
   styleUrl: './usercheck.component.scss',
 })
 export class UserCheckComponent implements OnInit {
+  private readonly usercheckService = inject(UserCheckService);
+
   isLoading = false;
   userName: string | null = null;
   errorMessage: string | null = null;
-
-  constructor(private readonly usercheckService: UserCheckService) {}
 
   ngOnInit(): void {
     this.loadUser();
