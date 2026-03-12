@@ -18,7 +18,7 @@ builder.Services.AddReverseProxy()
 
 var app = builder.Build();
 
-var frontendUrl = $"{app.Configuration["FrontendUrl"]}/usercheck"
+var frontendUrl = $"{app.Configuration["FrontendUrl"]}usercheck"
     ?? throw new InvalidOperationException("The parameter FrontendUrl is empty. Check appsettings.json.");
 
 app.MapGet("/login", () =>
