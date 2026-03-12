@@ -43,7 +43,7 @@ app.MapGet("/login", () =>
 });
 
 
-app.MapGet("/bff/user", (ClaimsPrincipal user) =>
+app.MapPost("/bff/user", (ClaimsPrincipal user) =>
 {
     return new
     {
