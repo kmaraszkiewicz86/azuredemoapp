@@ -1,0 +1,22 @@
+<div class="usercheck-container">
+  <h2>User Check</h2>
+
+  @if (isLoading) {
+    <p>Loading user details...</p>
+  }
+
+  @if (!isLoading && errorMessage) {
+    <div class="message error">{{ errorMessage }}</div>
+  }
+
+  @if (!isLoading && !errorMessage) {
+    <div class="message success">
+      Logged-in user: <strong>{{ userName || 'No name provided' }}</strong>
+    </div>
+  }
+
+  <div class="actions">
+    <button type="button" (click)="loadUser()">Refresh</button>
+    <a routerLink="/login">Back to login</a>
+  </div>
+</div>

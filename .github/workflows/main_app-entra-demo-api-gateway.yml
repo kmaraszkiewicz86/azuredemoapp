@@ -23,6 +23,14 @@ jobs:
         with:
           dotnet-version: '10.x'
 
+      - name: Replace Frontend URL for production
+        shell: pwsh
+        run: |
+          $file = "src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway/appsettings.json"
+          $json = Get-Content $file -Raw | ConvertFrom-Json
+          $json.FrontendUrl = "https://witty-meadow-0ebb9c603.1.azurestaticapps.net/"
+          $json | ConvertTo-Json -Depth 10 | Set-Content $file
+
       - name: Build with dotnet
         run: dotnet build src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway/MirsoftEntraDemo.ApiGateway.csproj --configuration Release
 
@@ -62,4 +70,3 @@ jobs:
           app-name: 'app-entra-demo-api-gateway'
           slot-name: 'Production'
           package: .
-          
