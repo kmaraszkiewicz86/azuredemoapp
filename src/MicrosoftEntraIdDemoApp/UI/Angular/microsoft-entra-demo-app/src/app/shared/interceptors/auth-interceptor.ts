@@ -14,7 +14,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         if (error.status === 401) {
           // Session expired! Redirecting to Gateway for re-authentication
           console.warn('Session expired. Redirecting to login...');
-          window.location.href = `${environment.apiHost}/login`;
+          window.location.href = `${environment.uiHost}/login`;
         }
         return throwError(() => error);
       })

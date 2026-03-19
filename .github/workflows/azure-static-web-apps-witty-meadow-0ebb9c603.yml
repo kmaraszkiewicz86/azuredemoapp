@@ -40,6 +40,14 @@ jobs:
               sed -i "s|apiHost:[[:space:]]*'[^']*'|apiHost: 'https://app-entra-demo-api-gateway-cff7bjdec5dxahe3.canadacentral-01.azurewebsites.net/'|g" "$file"
             fi
           done
+      - name: Update UI URL in environment files
+        working-directory: src/MicrosoftEntraIdDemoApp/UI/Angular/microsoft-entra-demo-app
+        run: |
+          for file in src/environments/environment.ts src/environments/environment.prod.ts; do
+            if [ -f "$file" ]; then
+              sed -i "s|uiHost:[[:space:]]*'[^']*'|uiHost: 'https://witty-meadow-0ebb9c603.1.azurestaticapps.net'|g" "$file"
+            fi
+          done
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
