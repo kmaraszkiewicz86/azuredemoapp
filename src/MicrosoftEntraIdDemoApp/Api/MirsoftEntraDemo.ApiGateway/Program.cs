@@ -20,8 +20,22 @@ builder.Services.AddAuthorization();
 // For AJAX / BFF calls we should return 401/403 instead of redirecting to the identity provider.
 // Redirects cause the browser to follow a cross-origin redirect and CORS will block the response
 // because the redirect target (login.microsoftonline.com) doesn't contain CORS headers.
-builder.Services.ConfigureApplicationCookie(options =>
+builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 {
+    // Make sure auth cookie can be sent in cross-site contexts from the SPA
+    options.Cookie.SameSite = SameSiteMode.None;
+    // In development the SPA may run on http://localhost:4200 — use SameAsRequest so the cookie
+    // is usable during local development. In production keep Always (Secure).
+    if (builder.Environment.IsDevelopment())
+    {
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    }
+    else
+    {
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    }
+    options.Cookie.HttpOnly = true;
+
     options.Events.OnRedirectToLogin = async context =>
     {
         var path = context.Request.Path;
@@ -74,13 +88,10 @@ app.UseAuthorization();
 var frontendUrl = $"{app.Configuration["FrontendUrl"]}usercheck"
     ?? throw new InvalidOperationException("The parameter FrontendUrl is empty. Check appsettings.json.");
 
-app.MapGet("/login", () =>
-{
-    return Results.Challenge(
+app.MapGet("/login", () => Results.Challenge(
         new AuthenticationProperties { RedirectUri = frontendUrl },
-        [ OpenIdConnectDefaults.AuthenticationScheme ]
-    );
-});
+        [OpenIdConnectDefaults.AuthenticationScheme]
+    ));
 
 app.MapPost("/bff/user", (ClaimsPrincipal user) =>
 {
@@ -90,16 +101,13 @@ app.MapPost("/bff/user", (ClaimsPrincipal user) =>
     };
 }).RequireAuthorization();
 
-app.MapGet("/logout", () =>
-{
-    return Results.SignOut(
+app.MapGet("/logout", () => Results.SignOut(
             new AuthenticationProperties { RedirectUri = frontendUrl },
             [
-                CookieAuthenticationDefaults.AuthenticationScheme, 
+                CookieAuthenticationDefaults.AuthenticationScheme,
                 OpenIdConnectDefaults.AuthenticationScheme
             ]
-        );
-});
+    ));
 
 app.MapOpenApi();
 
