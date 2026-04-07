@@ -1,18 +1,29 @@
 # MicrosoftEntraIdDemoApp
 
-## Description
+## Overview
 
-The demo application for testing sso login functionality connected with microsoft entra id contains login demo for login using azure entra id using by React and Angular UI projects  
+This demo application demonstrates Single Sign-On (SSO) integration with Microsoft Entra ID (formerly Azure AD). It showcases authentication and user profile retrieval using both React and Angular UI frameworks, highlighting differences in implementation approaches (HTTP interceptors vs. custom hooks).
 
-## Project structure
+## Architecture
 
-The demo project has 2 UI project
+The project consists of three main components:
 
-Angular contains only login and retrieve user name after login throught entra app id
-React the same as above to demostrate diffrence with using http interceptors
-project contains also API, that is login mediator use to pass request from UI into Azure Entra Id and get information from Azure Entra Id
+### Frontend Applications
+- **React UI** — Demonstrates SSO login and user retrieval using custom hooks (`useLogin`) and HTTP client patterns
+- **Angular UI** — Provides the same functionality using Angular services and interceptors for comparison
 
-The projects is in path:
-Angular: {path will be added}
-React: {path will be added}
-Api: {path will be added}
+### Backend API
+- **API Service** — Acts as a mediator between UI applications and Microsoft Entra ID, handling authentication flow and user data retrieval
+
+## Project Paths
+
+- React: `{path to be added}`
+- Angular: `{path to be added}`
+- API: `{path to be added}`
+
+## Key Features
+
+- Microsoft Entra ID authentication
+- User profile retrieval after login
+- Implementation examples in React (hooks-based) and Angular (service-based)
+- HTTP client abstraction for API communication
