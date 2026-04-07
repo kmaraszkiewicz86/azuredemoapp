@@ -32,6 +32,11 @@ jobs:
                const coredemo = require('@actions/core')
                return await coredemo.getIDToken()
            result-encoding: string
+      - name: Install and build
+        run: |
+          cd ./src/MicrosoftEntraIdDemoApp/UI/React/microsoft-entra-demo-app
+          npm ci
+          npm run build
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
