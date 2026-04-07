@@ -3,6 +3,6 @@ import { environment } from '../shared/environment';
 
 export const useLogin = () => {
   return useCallback(() => {
-    window.location.href = `${environment.apiHost}/login`;
+    window.location.href = `${environment.apiHost}/login?redirect=${environment.uiHost}/userCheck`;
   }, []);
 };

@@ -85,11 +85,8 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
-var frontendUrl = $"{app.Configuration["FrontendUrl"]}usercheck"
-    ?? throw new InvalidOperationException("The parameter FrontendUrl is empty. Check appsettings.json.");
-
-app.MapGet("/login", () => Results.Challenge(
-        new AuthenticationProperties { RedirectUri = frontendUrl },
+app.MapGet("/login", (string? redirect) => Results.Challenge(
+        new AuthenticationProperties { RedirectUri = redirect },
         [OpenIdConnectDefaults.AuthenticationScheme]
     ));
 
@@ -101,8 +98,8 @@ app.MapPost("/bff/user", (ClaimsPrincipal user) =>
     };
 }).RequireAuthorization();
 
-app.MapGet("/logout", () => Results.SignOut(
-            new AuthenticationProperties { RedirectUri = frontendUrl },
+app.MapGet("/logout", (string? redirect) => Results.SignOut(
+            new AuthenticationProperties { RedirectUri = redirect },
             [
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 OpenIdConnectDefaults.AuthenticationScheme
