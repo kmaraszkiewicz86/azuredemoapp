@@ -35,7 +35,7 @@ jobs:
       - name: Update API Gateway URL in environment files
         working-directory: src/MicrosoftEntraIdDemoApp/UI/React/microsoft-entra-demo-app
         run: |
-          for file in src/shared/environments/environment.ts src/shared/environments/environment.prod.ts; do
+          for file in src/shared/environment.ts; do
             if [ -f "$file" ]; then
               sed -i "s|apiHost:[[:space:]]*'[^']*'|apiHost: 'https://app-entra-demo-api-gateway-cff7bjdec5dxahe3.canadacentral-01.azurewebsites.net/'|g" "$file"
             fi
@@ -43,7 +43,7 @@ jobs:
       - name: Update UI URL in environment files
         working-directory: src/MicrosoftEntraIdDemoApp/UI/React/microsoft-entra-demo-app
         run: |
-          for file in src/shared/environments/environment.ts src/shared/environments/environment.prod.ts; do
+          for file in src/shared/environment.ts; do
             if [ -f "$file" ]; then
               sed -i "s|uiHost:[[:space:]]*'[^']*'|uiHost: 'https://red-cliff-0d92e4f03.4.azurestaticapps.net'|g" "$file"
             fi
