@@ -17,9 +17,9 @@ The project consists of three main components:
 
 ## Project Paths
 
-- React: `{path to be added}`
-- Angular: `{path to be added}`
-- API: `{path to be added}`
+- React: [link](https://github.com/kmaraszkiewicz86/azuredemoapp/tree/main/src/MicrosoftEntraIdDemoApp/UI/React/microsoft-entra-demo-app)
+- Angular: [link](https://github.com/kmaraszkiewicz86/azuredemoapp/tree/main/src/MicrosoftEntraIdDemoApp/UI/Angular/microsoft-entra-demo-app)
+- API: [link](https://github.com/kmaraszkiewicz86/azuredemoapp/tree/main/src/MicrosoftEntraIdDemoApp/Api/MirsoftEntraDemo.ApiGateway)
 
 ## Key Features
 
