@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
+using MirsoftEntraDemo.ApiGateway.Extensions;
 using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,11 +94,53 @@ app.MapGet("/login", (string? redirect) => Results.Challenge(
 
 app.MapPost("/bff/user", (ClaimsPrincipal user) =>
 {
+
+
+    var roles = user
+        .Claims
+        .Where(c => c.Type == ClaimTypes.Role || c.Type == "roles" || c.Type == "groups" )
+        .Select(c => c.GetGoupName())
+        .ToArray();
+
     return new
     {
         user.Identity?.Name,
+        roles
     };
 }).RequireAuthorization();
+
+app.MapGet("/api/checkGroup", (ClaimsPrincipal user) =>
+{
+    StringBuilder messages = new ();
+
+    if (user.IsInRole("Testowa"))
+    {
+        messages.AppendLine("You are in the Testowa group");
+    }
+
+    if (user.IsInRole("App-Testers"))
+    {
+        messages.AppendLine("You are in the App-Testers group");
+    }
+
+    if (messages.Length > 0)
+    {
+        return messages.ToString();
+    }
+
+    return "You are not a Testowa user.";
+})
+.RequireAuthorization();
+
+// Endpoint restricted to App-Testers group members only
+app.MapGet("/api/apptesters", () => {
+    return "You are in the App-Testers group";
+}).RequireAuthorization(policy => policy.RequireRole("App-Testers"));
+
+// Endpoint restricted to App-Testers group members only
+app.MapGet("/api/test", () => {
+    return "You are in the Testowa group!";
+}).RequireAuthorization(policy => policy.RequireRole("Testowa"));
 
 app.MapGet("/logout", (string? redirect) => Results.SignOut(
             new AuthenticationProperties { RedirectUri = redirect },

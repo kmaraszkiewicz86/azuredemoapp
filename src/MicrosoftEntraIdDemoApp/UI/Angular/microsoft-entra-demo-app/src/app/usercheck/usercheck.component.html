@@ -12,6 +12,16 @@
   @if (!isLoading && !errorMessage) {
     <div class="message success">
       Logged-in user: <strong>{{ userName || 'No name provided' }}</strong>
+      @if (roles && roles.length > 0) {
+        <div>
+          Roles:
+          <ul>
+              @for (role of roles; track role) {
+                <li>{{ role }}</li>
+              }
+          </ul>
+        </div>
+      }
     </div>
   }
 
