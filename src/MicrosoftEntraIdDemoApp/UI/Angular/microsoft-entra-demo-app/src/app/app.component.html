@@ -2,6 +2,10 @@
   <ul>
     <li><a routerLink="/login">Login</a></li>
     <li><a routerLink="/usercheck">User Check</a></li>
+    <li><a [routerLink]="['/auth-test', 'checkGroup']">Check Group</a></li>
+    <li><a [routerLink]="['/auth-test', 'apptesters']">App Testers</a></li>
+    <li><a [routerLink]="['/auth-test', 'test']">Test Group</a></li>
+    <li><a [routerLink]="['/auth-test', 'admin']">Admin Group</a></li>
   </ul>
 </nav>
 

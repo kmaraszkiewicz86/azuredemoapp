@@ -6,5 +6,9 @@ export const routes: Routes = [
     path: 'usercheck',
     loadComponent: () => import('./usercheck/usercheck.component').then(m => m.UserCheckComponent),
   },
+  {
+    path: 'auth-test/:type',
+    loadComponent: () => import('./auth-test/auth-test.component').then(m => m.AuthTestComponent),
+  },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];

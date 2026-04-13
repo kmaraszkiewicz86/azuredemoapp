@@ -10,6 +10,6 @@ export class UserCheckService {
   constructor(private readonly http: HttpClient) {}
 
   getCurrentUser(): Observable<UserCheckResponse> {
-    return this.http.post<UserCheckResponse>(`${environment.apiHost}/bff/user`, {});
+    return this.http.get<UserCheckResponse>(`${environment.apiHost}/bff/user`, {});
   }
 }

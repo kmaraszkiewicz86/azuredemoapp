@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 import { UserCheckService } from './usercheck.service';
 
@@ -33,7 +33,7 @@ export class UserCheckComponent implements OnInit {
 
   private async loadUserAsync(): Promise<void> {
     try {
-      const response = await firstValueFrom(this.usercheckService.getCurrentUser());
+      const response = await lastValueFrom(this.usercheckService.getCurrentUser());
       this.userName = response.name;
       this.roles = response.roles;
       this.isLoading = false;
