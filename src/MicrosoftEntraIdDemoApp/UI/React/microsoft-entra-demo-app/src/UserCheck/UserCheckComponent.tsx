@@ -1,6 +1,6 @@
 // src/components/usercheck/UserCheckComponent.tsx
 import { useEffect, useState } from 'react';
-import httpClient from '../shared/api/httpClient';
+import { checkUser } from './user-check.service';
 
 export default function UserCheckComponent() {
   const [user, setUser] = useState('n/a');
@@ -10,9 +10,9 @@ export default function UserCheckComponent() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await httpClient.post('/bff/user');
-        setUser(response?.data?.name ?? 'n/a');
-        setRoles(response?.data?.roles ?? []);
+        const response = await checkUser();
+        setUser(response?.name ?? 'n/a');
+        setRoles(response?.roles ?? []);
       } catch (error) {
         console.error('Error fetching user:', error);
       } finally {
