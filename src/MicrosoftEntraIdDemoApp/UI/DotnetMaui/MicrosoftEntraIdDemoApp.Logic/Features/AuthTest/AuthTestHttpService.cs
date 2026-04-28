@@ -8,9 +8,7 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.UserCheck
     {
         public async Task<Result<UserCheckInfoDto>> GetDataAsync(AuthPageType authPageType)
         {
-            string page = authPageType.ToString();
-
-            using HttpResponseMessage httpResponse = await httpClient.GetAsync("/bff/user");
+            using HttpResponseMessage httpResponse = await httpClient.GetAsync($"/api/{authPageType}");
 
             if (!httpResponse.IsSuccessStatusCode)
             {

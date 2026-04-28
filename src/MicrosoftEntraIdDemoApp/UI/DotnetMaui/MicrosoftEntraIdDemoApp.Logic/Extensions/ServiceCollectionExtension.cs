@@ -7,28 +7,6 @@ using MicrosoftEntraIdDemoApp.Logic.Models.Configurations;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Extensions
 {
-    public static class HttpResponseExtension
-    {
-        extension(HttpResponseMessage response)
-        {
-            /// <summary>
-            /// Extension method to map HTTP status codes to human-readable messages
-            /// </summary>
-            /// <returns></returns>
-            public string ToUserFriendlyMessage()
-            {
-                return response.StatusCode switch
-                {
-                    System.Net.HttpStatusCode.Unauthorized => "User not authenticated. Please login again.", // 401
-                    System.Net.HttpStatusCode.Forbidden => "You don't have permission to access this resource.", // 403
-                    System.Net.HttpStatusCode.NotFound => "The requested resource was not found.", // 404
-                    System.Net.HttpStatusCode.InternalServerError => "Server error. Please try again later.", // 500
-                    _ => $"Unexpected error: {response.ReasonPhrase} ({(int)response.StatusCode})"
-                };
-            }
-        }
-    }
-
     public static class ServiceCollectionExtension
     {
         extension (IServiceCollection services)
@@ -75,6 +53,25 @@ namespace MicrosoftEntraIdDemoApp.Logic.Extensions
 
             public IServiceCollection AddHttpServices()
             {
+                var baseAddress = new Uri("https://app-entra-demo-api-gateway-cff7bjdec5dxahe3.canadacentral-01.azurewebsites.net");
+
+                services.AddHttpClient<IAuthTestHttpService, AuthTestHttpService>(client =>
+                {
+                    // Set the base URL for this specific client so you don't repeat it in the service
+                    client.BaseAddress = baseAddress;
+
+                    // Optional: Set default timeouts or headers here (e.g., standard Accept headers)
+                    client.DefaultRequestHeaders.Add("Accept", "application/json");
+                });
+
+                services.AddHttpClient<IUserCheckHttpService, UserCheckHttpService>(client =>
+                {
+                    // Set the base URL for this specific client so you don't repeat it in the service
+                    client.BaseAddress = baseAddress;
+
+                    // Optional: Set default timeouts or headers here (e.g., standard Accept headers)
+                    client.DefaultRequestHeaders.Add("Accept", "application/json");
+                });
 
                 return services;
             }
