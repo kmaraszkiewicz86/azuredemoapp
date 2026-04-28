@@ -3,7 +3,7 @@
     x:Class="MicrosoftEntraIdDemoApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:loginFeature="clr-namespace:MicrosoftEntraIdDemoApp.Logic.Features.Login;assembly=MicrosoftEntraIdDemoApp.Logic"
+    xmlns:loginFeature="clr-namespace:MicrosoftEntraIdDemoApp.Logic.Features;assembly=MicrosoftEntraIdDemoApp.Logic"
     Title="MicrosoftEntraIdDemoApp">
 
     <ShellContent
