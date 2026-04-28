@@ -4,7 +4,7 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
 {
     public static class UserGroupsExtension
     {
-        extension (Claim claim)
+        extension(Claim claim)
         {
             public string GetGoupName() =>
                 claim.Value switch
