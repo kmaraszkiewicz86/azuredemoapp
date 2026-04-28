@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MicrosoftEntraIdDemoApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loginFeature="clr-namespace:MicrosoftEntraIdDemoApp.Logic.Features.Login;assembly=MicrosoftEntraIdDemoApp.Logic"
+    Title="MicrosoftEntraIdDemoApp">
+
+    <ShellContent
+        Title="Login Page"
+        ContentTemplate="{DataTemplate loginFeature:LoginPage}"
+        Route="LoginPage" />
+
+</Shell>

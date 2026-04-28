@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MicrosoftEntraIdDemoApp/MicrosoftEntraIdDemoApp.csproj" />
+  <Project Path="R:/RepoGit/azuredemoapp/src/MicrosoftEntraIdDemoApp/UI/DotnetMaui/MicrosoftEntraIdDemoApp.Logic/MicrosoftEntraIdDemoApp.Logic.csproj" />
+</Solution>
