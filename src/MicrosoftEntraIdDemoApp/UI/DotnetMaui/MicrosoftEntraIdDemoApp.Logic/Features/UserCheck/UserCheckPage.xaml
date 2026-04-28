@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MicrosoftEntraIdDemoApp.Logic.Features.UserCheck.UserCheckPage"
+             Title="UserCheckPage">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Button Text="Pobierz dane" 
+                    Command="{Binding GetDataCommand}" 
+                    HorizontalOptions="Center" />
+
+            <Label Text="{Binding ErrorMessage}" 
+                   TextColor="Red" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage.Length}" Value="0">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+
+            <Border Stroke="LightGray" 
+                    StrokeThickness="1"
+                    Padding="20">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding UserCheckInfo}" Value="{x:Null}">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Border.Triggers>
+
+                <VerticalStackLayout BindingContext="{Binding UserCheckInfo}" Spacing="10">
+
+                    <Label Text="Zalogowano jako:" FontSize="14" TextColor="Gray" />
+
+                    <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" />
+
+                    <Label Text="Grupy / Role:" FontSize="14" TextColor="Gray" Margin="0,10,0,0" />
+                    <Label Text="{Binding Roles}" FontSize="16" />
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
