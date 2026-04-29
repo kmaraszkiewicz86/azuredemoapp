@@ -4,6 +4,8 @@ using MicrosoftEntraIdDemoApp.Logic.Features.AuthTest;
 using MicrosoftEntraIdDemoApp.Logic.Features.Login;
 using MicrosoftEntraIdDemoApp.Logic.Features.UserCheck;
 using MicrosoftEntraIdDemoApp.Logic.Models.Configurations;
+using MicrosoftEntraIdDemoApp.Logic.Shared;
+using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Extensions
 {
@@ -27,6 +29,7 @@ namespace MicrosoftEntraIdDemoApp.Logic.Extensions
                     return builder.Build();
                 });
 
+                services.AddSingleton<ITokenService, TokenService>();
                 services.AddTransient<ILoginHttpService, LoginHttpService>();
 
 
@@ -35,6 +38,8 @@ namespace MicrosoftEntraIdDemoApp.Logic.Extensions
 
             public IServiceCollection AddViews()
             {
+                services.AddTransient<INavigationService, NavigationService>();
+
                 services.AddTransient<LoginPage>();
                 services.AddTransient<UserCheckPage>();
                 services.AddTransient<AuthTestPage>();
