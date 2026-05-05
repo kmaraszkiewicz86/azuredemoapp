@@ -1,17 +1,16 @@
-﻿namespace MicrosoftEntraIdDemoApp.Logic.Shared
+﻿using MicrosoftEntraIdDemoApp.Logic.Features;
+using MicrosoftEntraIdDemoApp.Logic.Features.UserCheck;
+
+namespace MicrosoftEntraIdDemoApp.Logic.Shared
 {
     public class NavigationService : INavigationService
     {
         // Resets stack and goes to UserCheck
         public async Task GoToUserCheckAsync()
-            => await Shell.Current.GoToAsync("//UserCheck");
+            => await Shell.Current.GoToAsync($"//{nameof(UserCheckPage)}");
 
         // Resets stack and goes to Login
         public async Task GoToLoginAsync()
-            => await Shell.Current.GoToAsync("//Login");
-
-        // Standard back navigation
-        public async Task GoBackAsync()
-            => await Shell.Current.GoToAsync("..");
+            => await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
     }
 }

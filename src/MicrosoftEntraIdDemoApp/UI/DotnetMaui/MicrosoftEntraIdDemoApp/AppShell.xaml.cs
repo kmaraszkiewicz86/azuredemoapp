@@ -1,4 +1,5 @@
-﻿using MicrosoftEntraIdDemoApp.Logic.Features.UserCheck;
+﻿using MicrosoftEntraIdDemoApp.Logic.Features.AuthTest;
+using MicrosoftEntraIdDemoApp.Logic.Features.UserCheck;
 
 namespace MicrosoftEntraIdDemoApp
 {

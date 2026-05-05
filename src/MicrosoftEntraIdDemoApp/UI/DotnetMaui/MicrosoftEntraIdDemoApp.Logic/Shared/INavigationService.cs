@@ -4,6 +4,5 @@
     {
         Task GoToUserCheckAsync();
         Task GoToLoginAsync();
-        Task GoBackAsync();
     }
 }

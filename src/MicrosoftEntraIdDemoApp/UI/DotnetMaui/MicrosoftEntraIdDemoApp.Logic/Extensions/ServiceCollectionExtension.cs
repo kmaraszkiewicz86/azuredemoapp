@@ -80,6 +80,14 @@ namespace MicrosoftEntraIdDemoApp.Logic.Extensions
 
                 return services;
             }
+
+            public IServiceCollection AddSharedServices()
+            {
+                services.AddSingleton<INavigationService, NavigationService>();
+                services.AddSingleton<ITokenService, TokenService>();
+
+                return services;
+            }
         }
     }
 

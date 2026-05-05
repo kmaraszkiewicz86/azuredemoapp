@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MicrosoftEntraIdDemoApp.Logic.Shared;
 using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
 using System.Windows.Input;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
 {
-    public class LoginViewModel(ILoginHttpService loginHttpService, ITokenService tokenService) : ObservableObject
+    public class LoginViewModel(ILoginHttpService loginHttpService, ITokenService tokenService, INavigationService navigationService) : ObservableObject
     {
         public string ErrorMessage
         {
@@ -21,7 +22,7 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
         {
             if (await tokenService.IsUserLogged())
             {
-                //redirect
+                await navigationService.GoToUserCheckAsync();
             }
 
             throw new NotImplementedException();
