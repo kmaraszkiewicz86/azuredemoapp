@@ -1,4 +1,7 @@
 <Solution>
-  <Project Path="MicrosoftEntraIdDemoApp/MicrosoftEntraIdDemoApp.csproj" />
+  <Project Path="MicrosoftEntraIdDemoApp/MicrosoftEntraIdDemoApp.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
   <Project Path="R:/RepoGit/azuredemoapp/src/MicrosoftEntraIdDemoApp/UI/DotnetMaui/MicrosoftEntraIdDemoApp.Logic/MicrosoftEntraIdDemoApp.Logic.csproj" />
+  <Project Path="Tests/MicrosoftEntraIdDemoApp.Logic.UnitTests/MicrosoftEntraIdDemoApp.Logic.UnitTests.csproj" Id="14bd149f-64c0-4455-a416-296f70d5fad4" />
 </Solution>

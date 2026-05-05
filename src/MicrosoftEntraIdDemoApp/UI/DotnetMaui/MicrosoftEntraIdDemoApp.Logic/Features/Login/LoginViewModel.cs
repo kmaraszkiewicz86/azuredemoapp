@@ -14,9 +14,9 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
             set => SetProperty(ref field, value);
         } = string.Empty;
 
-        public ICommand LoginCommand => new AsyncRelayCommand(OnLoginAsync);
+        public IAsyncRelayCommand LoginCommand => new AsyncRelayCommand(OnLoginAsync);
 
-        public ICommand LoadCommand => new AsyncRelayCommand(OnLoadAsync);
+        public IAsyncRelayCommand LoadCommand => new AsyncRelayCommand(OnLoadAsync);
 
         private async Task OnLoadAsync()
         {
@@ -24,8 +24,6 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
             {
                 await navigationService.GoToUserCheckAsync();
             }
-
-            throw new NotImplementedException();
         }
 
         private async Task OnLoginAsync()
