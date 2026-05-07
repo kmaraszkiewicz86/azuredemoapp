@@ -1,3 +1,5 @@
+using FluentAssertions;
+using FluentResults;
 using MicrosoftEntraIdDemoApp.Logic.UnitTests.Fixtures;
 using NSubstitute;
 
@@ -25,6 +27,7 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.UnitTests.Login
             // Assert
             await _fixture.NavigationService.Received(1).GoToUserCheckAsync();
             await _fixture.TokenService.Received(1).IsUserLogged();
+            viewModel.ErrorMessage.Should().BeNullOrWhiteSpace();
         }
 
         [Fact]
@@ -40,20 +43,39 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.UnitTests.Login
             // Assert
             await _fixture.NavigationService.DidNotReceive().GoToUserCheckAsync();
             await _fixture.TokenService.Received(1).IsUserLogged();
+            viewModel.ErrorMessage.Should().NotBeNullOrWhiteSpace();
         }
 
         [Fact]
-        public async Task OnLoadAsync_WhenTokenServiceThrowsException_ShouldPropagateException()
+        public async Task OnLoginAsync_WhenUserIsLogged_ShouldNavigateToUserCheck()
         {
             // Arrange
-            var exception = new InvalidOperationException("Token service error");
-            _fixture.TokenService.IsUserLogged().Returns(Task.FromException<bool>(exception));
+            _fixture.LoginHttpService.LoginAsync().Returns(Task.FromResult(Result.Ok()));
             var viewModel = _fixture.CreateFixure();
 
-            // Act & Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(
-                () => viewModel.LoadCommand.ExecuteAsync(null)
-            );
+            // Act
+            await viewModel.LoginCommand.ExecuteAsync(null);
+
+            // Assert
+            await _fixture.NavigationService.Received(1).GoToUserCheckAsync();
+            await _fixture.TokenService.Received(1).IsUserLogged();
+            viewModel.ErrorMessage.Should().BeNullOrWhiteSpace();
+        }
+
+        [Fact]
+        public async Task OnLoginAsync_WhenUserIsNotLogged_ShouldNotNavigate()
+        {
+            // Arrange
+            _fixture.LoginHttpService.LoginAsync().Returns(Task.FromResult(Result.Fail("Login failed")));
+            var viewModel = _fixture.CreateFixure();
+
+            // Act
+            await viewModel.LoginCommand.ExecuteAsync(null);
+
+            // Assert
+            await _fixture.NavigationService.DidNotReceive().GoToUserCheckAsync();
+            await _fixture.TokenService.Received(1).IsUserLogged();
+            viewModel.ErrorMessage.Should().NotBeNullOrWhiteSpace();
         }
     }
 }

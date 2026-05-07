@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using FluentResults;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MicrosoftEntraIdDemoApp.Logic.Shared;
 using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
-using System.Windows.Input;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
 {
@@ -22,13 +22,35 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
         {
             if (await tokenService.IsUserLogged())
             {
-                await navigationService.GoToUserCheckAsync();
+                await RedirectToUserCheckPageAsync();
             }
         }
 
         private async Task OnLoginAsync()
         {
-            await loginHttpService.LoginAsync();
+            Result result = await loginHttpService.LoginAsync();
+            if (result.IsSuccess)
+            {
+                await RedirectToUserCheckPageAsync();
+            }
+            else
+            {
+                var errorMessages = result.Errors?.Select(e => e.Message) ?? [];
+                ErrorMessage = errorMessages.Any() ? string.Join(';', errorMessages) : "Login failed - unknown error";
+            }
         }
+
+        private async Task RedirectToUserCheckPageAsync()
+        {
+            try
+            {
+                await navigationService.GoToUserCheckAsync();
+            }
+            catch
+            {
+                ErrorMessage = "An error occurred while navigate to the user check page";
+            }
+        }
+
     }
 }

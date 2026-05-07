@@ -1,7 +1,9 @@
-﻿namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
+﻿using FluentResults;
+
+namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
 {
     public interface ILoginHttpService
     {
-        Task<bool> LoginAsync();
+        Task<Result> LoginAsync();
     }
 }
