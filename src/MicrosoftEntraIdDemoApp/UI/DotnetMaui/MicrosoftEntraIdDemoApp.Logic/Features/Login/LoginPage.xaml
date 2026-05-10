@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:Kmaraszkiewicz86.Maui.Behaviors;assembly=Kmaraszkiewicz86.Maui.Behaviors"
              x:Class="MicrosoftEntraIdDemoApp.Logic.Features.LoginPage"
-             Appearing="ContentPage_Appearing"
              Title="LoginPage">
+
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior EventName="Appearing" Command="{Binding LoadCommand}" />
+    </ContentPage.Behaviors>
 
     <VerticalStackLayout 
         Spacing="20" 
