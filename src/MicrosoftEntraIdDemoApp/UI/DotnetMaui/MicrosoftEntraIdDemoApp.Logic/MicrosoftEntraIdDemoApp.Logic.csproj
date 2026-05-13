@@ -32,6 +32,7 @@
 		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.7" />
 		<PackageReference Include="Microsoft.Identity.Client" Version="4.83.3" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.60" />
+		<PackageReference Include="Kmaraszkiewicz86.Maui.Behaviors" Version="1.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -44,30 +45,6 @@
 	  <MauiXaml Update="Features\UserCheck\UserCheckPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
-	  <PackageReference Include="Kmaraszkiewicz86.Maui.Behaviors">
-	    <Version>1.0.2</Version>
-	  </PackageReference>
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0-ios'">
-	  <PackageReference Include="Kmaraszkiewicz86.Maui.Behaviors">
-	    <Version>1.0.2</Version>
-	  </PackageReference>
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0-maccatalyst'">
-	  <PackageReference Include="Kmaraszkiewicz86.Maui.Behaviors">
-	    <Version>1.0.2</Version>
-	  </PackageReference>
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0-windows10.0.19041.0'">
-	  <PackageReference Include="Kmaraszkiewicz86.Maui.Behaviors">
-	    <Version>1.0.2</Version>
-	  </PackageReference>
 	</ItemGroup>
 
 </Project>
