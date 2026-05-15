@@ -22,6 +22,10 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
             {
                 return Result.Fail(ex.Message);
             }
+            catch (Exception ex)
+            {
+                return Result.Fail($"Unhandled error occurred: {ex.Message}");
+            }
         }
     }
 }
