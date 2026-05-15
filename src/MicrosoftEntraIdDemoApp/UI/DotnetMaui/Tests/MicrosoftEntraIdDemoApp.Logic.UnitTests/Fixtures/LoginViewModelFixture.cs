@@ -7,8 +7,20 @@ namespace MicrosoftEntraIdDemoApp.Logic.UnitTests.Fixtures
 {
     public class LoginViewModelFixture : TestBase<LoginViewModel>
     {
-        public ILoginHttpService LoginHttpService => Fixture.Create<ILoginHttpService>();
-        public ITokenService TokenService => Fixture.Create<ITokenService>();
-        public INavigationService NavigationService => Fixture.Create<INavigationService>();
+        public ILoginHttpService? LoginHttpService { get; init; }
+        public ITokenService? TokenService { get; init; }
+        public INavigationService? NavigationService { get; init; }
+
+        public LoginViewModelFixture()
+        {
+            LoginHttpService = Fixture.Freeze<ILoginHttpService>();
+            TokenService = Fixture.Freeze<ITokenService>();
+            NavigationService = Fixture.Freeze<INavigationService>();
+        }
+
+        public override LoginViewModel CreateFixure()
+            => Fixture.Build<LoginViewModel>()
+                .OmitAutoProperties()
+                .Create();
     }
 }
