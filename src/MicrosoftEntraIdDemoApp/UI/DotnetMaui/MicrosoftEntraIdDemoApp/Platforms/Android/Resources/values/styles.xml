@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+	<!-- Główny motyw aplikacji bazujący na MaterialComponents -->
+	<style name="MainTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+		<item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+		<item name="android:windowActivityTransitions">true</item>
+	</style>
+
+	<!-- Motyw dla Splash Screen, który dziedziczy z Material i wskazuje na MainTheme po załadowaniu -->
+	<style name="Maui.SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+		<item name="android:windowBackground">@drawable/maui_splash</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowFullscreen">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+		<item name="android:windowActivityTransitions">true</item>
+	</style>
+</resources>
