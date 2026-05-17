@@ -5,5 +5,6 @@
         Task<string> GetAsync();
         Task<bool> IsUserLogged();
         Task SaveAsync(string token);
+        Task<(bool IsSuccess, string Token)> TryGetAsync();
     }
 }

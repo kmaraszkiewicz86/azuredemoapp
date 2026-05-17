@@ -1,14 +1,26 @@
 ﻿using FluentResults;
 using MicrosoftEntraIdDemoApp.Logic.Extensions;
+using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Features.UserCheck
 {
-    public class AuthTestHttpService(HttpClient httpClient) : IAuthTestHttpService
+    public class AuthTestHttpService(HttpClient httpClient, ITokenService tokenService) : IAuthTestHttpService
     {
         public async Task<Result<UserCheckInfoDto>> GetDataAsync(AuthPageType authPageType)
         {
-            using HttpResponseMessage httpResponse = await httpClient.GetAsync($"/api/{authPageType}");
+            var (isSuccess, token) = await tokenService.TryGetAsync();
+
+            if (!isSuccess)
+            {
+                return Result.Fail("User is not logged in.");
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"/api/{authPageType}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            using HttpResponseMessage httpResponse = await httpClient.SendAsync(request);
 
             if (!httpResponse.IsSuccessStatusCode)
             {

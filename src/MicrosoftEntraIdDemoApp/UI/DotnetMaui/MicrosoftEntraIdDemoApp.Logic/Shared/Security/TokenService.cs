@@ -24,6 +24,20 @@
         }
 
         /// <summary>
+        /// Get token if exist and return Tuple (bool IsSuccess, string Token) with IsSuccess = true, otherwise return empty string and (bool IsSuccess, string Token) with IsSuccess = false
+        /// </summary>
+        /// <returns>The api token</returns>
+        public async Task<(bool IsSuccess, string Token)> TryGetAsync()
+        {
+            var token = await SecureStorage.Default.GetAsync(TokenKey) ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(token))
+                return (false, string.Empty);
+
+            return (true, token);
+        }
+
+        /// <summary>
         /// Checks if token is saved in storage to check if user is logged in to the system
         /// </summary>
         /// <returns>True if user is logged otherwise false</returns>
