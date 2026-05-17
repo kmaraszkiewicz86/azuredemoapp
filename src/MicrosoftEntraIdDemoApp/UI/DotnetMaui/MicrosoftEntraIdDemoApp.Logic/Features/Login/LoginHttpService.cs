@@ -1,7 +1,6 @@
 ﻿using FluentResults;
 using Microsoft.Identity.Client;
 using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
-using System.Diagnostics;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
 {
@@ -11,31 +10,22 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
         {
             try
             {
-#if ANDROID
-                // Android: upewnij się że parent activity jest dostępna
-                if (Platform.CurrentActivity == null)
-                {
-                    return Result.Fail("Platform.CurrentActivity is null");
-                }
-#endif
+                // 1. Open the system browser for login (Microsoft login window appears)
+                var authResult = await identityClient.AcquireTokenInteractive(["User.Read"])
+                                           .ExecuteAsync();
 
-                var authResult = await identityClient
-                    .AcquireTokenInteractive(new[] { "User.Read" })
-                    .ExecuteAsync();
-
+                // 2. Token acquired! Save it in the device's secure storage
                 await tokenService.SaveAsync(authResult.AccessToken);
 
                 return Result.Ok();
             }
             catch (MsalException ex)
             {
-                Debug.WriteLine($"MSAL ERROR: {ex.ErrorCode} - {ex.Message}");
                 return Result.Fail(ex.Message);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"ERROR: {ex.Message}\n{ex.StackTrace}");
-                return Result.Fail(ex.Message);
+                return Result.Fail($"Unhandled error occurred: {ex.Message}");
             }
         }
     }
