@@ -1,4 +1,5 @@
 ﻿using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Abstractions;
 using MicrosoftEntraIdDemoApp.Logic.Features;
 using MicrosoftEntraIdDemoApp.Logic.Features.AuthTest;
 using MicrosoftEntraIdDemoApp.Logic.Features.Login;
@@ -6,6 +7,7 @@ using MicrosoftEntraIdDemoApp.Logic.Features.UserCheck;
 using MicrosoftEntraIdDemoApp.Logic.Models.Configurations;
 using MicrosoftEntraIdDemoApp.Logic.Shared;
 using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
+using System.Diagnostics;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Extensions
 {
@@ -13,18 +15,15 @@ namespace MicrosoftEntraIdDemoApp.Logic.Extensions
     {
         extension (IServiceCollection services)
         {
-            public IServiceCollection ConfigureAzureEntraId(AzureEntraIdConfig azureEntraIdConfig)
+            public IServiceCollection ConfigureAzureEntraId()
             {
                 services.AddTransient<IPublicClientApplication>(opt =>
                 {
-                    PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(azureEntraIdConfig.ClientId)
-                        .WithAuthority(AzureCloudInstance.AzurePublic, azureEntraIdConfig.TenantId)
-                        // This must match your Android/iOS configuration in Azure
-                        .WithRedirectUri(azureEntraIdConfig.RedirectUri)
-                        .WithIosKeychainSecurityGroup("com.microsoft.adalcache");
-#if ANDROID
-                    builder.WithParentActivityOrWindow(() => Platform.CurrentActivity);
-#endif
+                    PublicClientApplicationBuilder builder = PublicClientApplicationBuilder
+                        .Create(AzureEntraIdConfig.ClientId)
+                        .WithAuthority(AzureEntraIdConfig.Authority)
+                        .WithLogging(new IdentityLogger(EventLogLevel.Warning), enablePiiLogging: false)
+                        .WithRedirectUri($"msal{AzureEntraIdConfig.ClientId}://auth");
 
                     return builder.Build();
                 });

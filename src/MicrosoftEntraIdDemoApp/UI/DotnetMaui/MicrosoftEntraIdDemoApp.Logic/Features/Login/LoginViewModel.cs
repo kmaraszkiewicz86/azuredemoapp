@@ -1,6 +1,8 @@
-﻿using FluentResults;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentResults;
+using Microsoft.Identity.Client;
+using MicrosoftEntraIdDemoApp.Logic.Models.Configurations;
 using MicrosoftEntraIdDemoApp.Logic.Shared;
 using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
 

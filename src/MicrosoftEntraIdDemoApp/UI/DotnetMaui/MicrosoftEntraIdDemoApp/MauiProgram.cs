@@ -17,10 +17,8 @@ namespace MicrosoftEntraIdDemoApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            AzureEntraIdConfig config = new("clientId", "tenantId", $"msauth://com.kmaraszkiewicz86.microsoftentraiddemoapp/YOUR_HASH");
-
             builder.Services
-                .ConfigureAzureEntraId(config)
+                .ConfigureAzureEntraId()
                 .AddHttpServices()
                 .AddViewModels()
                 .AddViews();
