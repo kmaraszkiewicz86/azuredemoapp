@@ -29,22 +29,33 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
 
             public IServiceCollection ConfigureAzureEntraId(bool isDevelopment, ConfigurationManager configuration)
             {
-                services.AddAuthentication(options =>
+                // 1. Get the standard AuthenticationBuilder receiver
+                var authBuilder = services.AddAuthentication(options =>
                 {
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddMicrosoftIdentityWebApp(options =>
-                {
-                    configuration.GetSection("AzureAd").Bind(options);
-                    options.TokenValidationParameters.RoleClaimType = "groups";
                 });
+
+                // 2. Configure Web / BFF using the builder instance
+                authBuilder.AddMicrosoftIdentityWebApp(configuration.GetSection("AzureAd"), CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
+
+                // 3. Configure .NET MAUI Bearer authentication using the same builder instance
+                authBuilder.AddMicrosoftIdentityWebApi(configuration.GetSection("AzureAd"), JwtBearerDefaults.AuthenticationScheme);
 
                 services.AddAuthorization(options =>
                 {
-                    options.AddPolicy("Testowa", policy => policy.RequireClaim("groups", "9b7d25da-24a0-41fc-9fb7-c58cf60a167a"));
-                    options.AddPolicy("App-Testers", policy => policy.RequireClaim("groups", "7d8c1230-8e85-4421-8f07-4eb9dcae7812"));
-                    options.AddPolicy("Admin", policy => policy.RequireClaim("groups", "b3ed6fe5-0ea5-4be4-8d5f-91c4bd247cfd"));
+                    // Explicitly add both authentication schemes to each custom policy
+                    options.AddPolicy("Testowa", policy => policy
+                        .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
+                        .RequireClaim("groups", "9b7d25da-24a0-41fc-9fb7-c58cf60a167a"));
+
+                    options.AddPolicy("App-Testers", policy => policy
+                        .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
+                        .RequireClaim("groups", "7d8c1230-8e85-4421-8f07-4eb9dcae7812"));
+
+                    options.AddPolicy("Admin", policy => policy
+                        .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
+                        .RequireClaim("groups", "b3ed6fe5-0ea5-4be4-8d5f-91c4bd247cfd"));
 
                     // By default, require authentication for all requests and allow both cookie and bearer token authentication schemes
                     options.DefaultPolicy = new AuthorizationPolicyBuilder()
