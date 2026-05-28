@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
 
 namespace MirsoftEntraDemo.ApiGateway.Extensions
@@ -43,6 +45,12 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
                     options.AddPolicy("Testowa", policy => policy.RequireClaim("groups", "9b7d25da-24a0-41fc-9fb7-c58cf60a167a"));
                     options.AddPolicy("App-Testers", policy => policy.RequireClaim("groups", "7d8c1230-8e85-4421-8f07-4eb9dcae7812"));
                     options.AddPolicy("Admin", policy => policy.RequireClaim("groups", "b3ed6fe5-0ea5-4be4-8d5f-91c4bd247cfd"));
+
+                    // By default, require authentication for all requests and allow both cookie and bearer token authentication schemes
+                    options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
+                        .Build();
                 });
 
                 // For AJAX / BFF calls we should return 401/403 instead of redirecting to the identity provider.
