@@ -49,7 +49,7 @@ namespace MicrosoftEntraIdDemoApp.Platforms.Android
         //
         // Example:
         // msalfb631f30-6681-478c-9b4b-48100cce3
-        DataScheme = "msal{application_client_id}")]
+        DataScheme = "msalfb631f30-6681-478c-9b4b-48100cce3fea")]
     public class MsalActivity : BrowserTabActivity
     {
     }

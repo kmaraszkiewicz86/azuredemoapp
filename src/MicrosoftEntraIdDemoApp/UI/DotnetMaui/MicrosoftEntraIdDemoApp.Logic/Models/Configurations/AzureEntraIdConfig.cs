@@ -10,7 +10,7 @@
         /// Entra ID -> Overview -> Tenant ID
         /// </summary>
         public static string Authority =
-            "https://login.microsoftonline.com/{TenantId}/v2.0";
+            "https://login.microsoftonline.com/559178cd-d446-4820-90e1-7f689b4ec706/v2.0";
 
         /// <summary>
         /// Application (client) ID of the App Registration.
@@ -20,7 +20,7 @@
         /// -> Application (client) ID
         /// </summary>
         public static string ClientId =
-            "{application_client_id}";
+            "fb631f30-6681-478c-9b4b-48100cce3fea";
 
         /// <summary>
         /// Directory (tenant) ID.
@@ -30,7 +30,7 @@
         /// -> Tenant ID
         /// </summary>
         public static string TenantId =
-            "{tenant_id}";
+            "559178cd-d446-4820-90e1-7f689b4ec706";
 
         /// <summary>
         /// API scopes requested by the mobile application.
@@ -49,7 +49,7 @@
         /// </summary>
         public static string[] Scopes =
         [
-            "api://{application_client_id}/access_as_user"
+            "api://fb631f30-6681-478c-9b4b-48100cce3fea/access_as_user"
         ];
 
         /// <summary>

@@ -6,7 +6,7 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="msal_tenant_id" android:host="auth" />
+				<data android:scheme="msalfb631f30-6681-478c-9b4b-48100cce3fea" android:host="auth" />
 			</intent-filter>
 		</activity>
 		<activity android:name="MicrosoftEntraIdDemoApp.Platforms.Android.MsalActivity" android:configChanges="orientation|screenSize" android:exported="true">
@@ -14,7 +14,7 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="msal_tenant_id" android:host="auth" />
+				<data android:scheme="msalfb631f30-6681-478c-9b4b-48100cce3fea" android:host="auth" />
 			</intent-filter>
 		</activity>
 	</application>
