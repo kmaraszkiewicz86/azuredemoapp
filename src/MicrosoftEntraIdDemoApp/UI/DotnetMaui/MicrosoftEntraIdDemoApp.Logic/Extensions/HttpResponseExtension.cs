@@ -1,4 +1,6 @@
-﻿namespace MicrosoftEntraIdDemoApp.Logic.Extensions
+﻿using System.Net;
+
+namespace MicrosoftEntraIdDemoApp.Logic.Extensions
 {
     public static class HttpResponseExtension
     {
@@ -12,11 +14,12 @@
             {
                 return response.StatusCode switch
                 {
-                    System.Net.HttpStatusCode.Unauthorized => "User not authenticated. Please login again.", // 401
-                    System.Net.HttpStatusCode.Forbidden => "You don't have permission to access this resource.", // 403
-                    System.Net.HttpStatusCode.NotFound => "The requested resource was not found.", // 404
-                    System.Net.HttpStatusCode.InternalServerError => "Server error. Please try again later.", // 500
-                    _ => $"Unexpected error: {response.ReasonPhrase} ({(int)response.StatusCode})"
+                    HttpStatusCode.BadRequest => "Bad request. Please check your input.",
+                    HttpStatusCode.Unauthorized => "Unauthorized. Please log in again.",
+                    HttpStatusCode.Forbidden => "Forbidden. You don't have permission to access this resource.",
+                    HttpStatusCode.NotFound => "Not found. The requested resource does not exist.",
+                    HttpStatusCode.InternalServerError => "Internal server error. Please try again later.",
+                    _ => $"An error occurred: {response.StatusCode}"
                 };
             }
         }

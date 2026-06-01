@@ -8,6 +8,12 @@
     xmlns:authTestFeature="clr-namespace:MicrosoftEntraIdDemoApp.Logic.Features.AuthTest;assembly=MicrosoftEntraIdDemoApp.Logic"
     Title="MicrosoftEntraIdDemoApp">
 
+    <Shell.ToolbarItems>
+        <ToolbarItem
+        Text="Logout"
+        Command="{Binding LogoutCommand}" />
+    </Shell.ToolbarItems>
+
     <ShellContent
         Title="Login Page"
         ContentTemplate="{DataTemplate loginFeature:LoginPage}"

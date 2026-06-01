@@ -7,6 +7,7 @@ using MicrosoftEntraIdDemoApp.Logic.Features.UserCheck;
 using MicrosoftEntraIdDemoApp.Logic.Models.Configurations;
 using MicrosoftEntraIdDemoApp.Logic.Shared;
 using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
+using MicrosoftEntraIdDemoApp.Logic.ViewModels;
 using System.Diagnostics;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Extensions
@@ -51,13 +52,14 @@ namespace MicrosoftEntraIdDemoApp.Logic.Extensions
                 services.AddTransient<LoginViewModel>();
                 services.AddTransient<UserCheckViewModel>();
                 services.AddTransient<AuthTestViewModel>();
+                services.AddTransient<AppShellViewModel>();
 
                 return services;
             }
 
             public IServiceCollection AddHttpServices()
             {
-                var baseAddress = new Uri("https://app-entra-demo-api-gateway-cff7bjdec5dxahe3.canadacentral-01.azurewebsites.net");
+                var baseAddress = new Uri("http://192.168.8.5:5070/");
 
                 services.AddHttpClient<IAuthTestHttpService, AuthTestHttpService>(client =>
                 {
