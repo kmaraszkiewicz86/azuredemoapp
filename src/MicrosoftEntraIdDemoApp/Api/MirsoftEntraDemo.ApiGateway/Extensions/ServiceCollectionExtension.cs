@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
+using System.Text;
 
 namespace MirsoftEntraDemo.ApiGateway.Extensions
 {
@@ -119,32 +120,48 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
                         {
                             OnAuthenticationFailed = context =>
                             {
-                                Console.WriteLine("=== AUTH FAILED ===");
-                                Console.WriteLine(context.Exception);
+                                var logger = context.HttpContext.RequestServices
+                                    .GetRequiredService<ILogger<Program>>();
+
+                                logger.LogInformation("=== AUTH FAILED ===");
+                                logger.LogInformation(context.Exception?.ToString() ?? string.Empty);
 
                                 return Task.CompletedTask;
                             },
 
                             OnTokenValidated = context =>
                             {
-                                Console.WriteLine("=== TOKEN OK ===");
+                                var logger = context.HttpContext.RequestServices
+                                    .GetRequiredService<ILogger<Program>>();
+
+                                StringBuilder claimsStringBuilder = new();
+
+                                logger.LogInformation("=== TOKEN OK ===");
 
                                 var claims = context.Principal?.Claims
                                     .Select(c => $"{c.Type} = {c.Value}");
 
                                 foreach (var claim in claims ?? [])
-                                    {
-                                        Console.WriteLine(claim);
-                                    }
+                                {
+                                    claimsStringBuilder.AppendFormat( "{0}; ", claim);
+                                }
+
+                                if (claimsStringBuilder.Length > 0)
+                                {
+                                    logger.LogInformation(claimsStringBuilder.ToString());
+                                }
 
                                 return Task.CompletedTask;
                             },
 
                             OnChallenge = context =>
                             {
-                                Console.WriteLine("=== CHALLENGE ===");
-                                Console.WriteLine(context.Error);
-                                Console.WriteLine(context.ErrorDescription);
+                                var logger = context.HttpContext.RequestServices
+                                    .GetRequiredService<ILogger<Program>>();
+
+                                logger.LogInformation("=== CHALLENGE ===");
+                                logger.LogInformation(context.Error);
+                                logger.LogInformation(context.ErrorDescription);
 
                                 return Task.CompletedTask;
                             }
