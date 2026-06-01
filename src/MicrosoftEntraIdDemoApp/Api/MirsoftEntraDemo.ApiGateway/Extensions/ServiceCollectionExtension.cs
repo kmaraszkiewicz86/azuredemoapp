@@ -133,9 +133,9 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
                                     .Select(c => $"{c.Type} = {c.Value}");
 
                                 foreach (var claim in claims ?? [])
-                                {
-                                    Console.WriteLine(claim);
-                                }
+                                    {
+                                        Console.WriteLine(claim);
+                                    }
 
                                 return Task.CompletedTask;
                             },
@@ -149,7 +149,7 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
                                 return Task.CompletedTask;
                             }
                         };
-                });
+                    });
 
                 return services;
             }
