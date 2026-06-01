@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MicrosoftEntraIdDemoApp.Logic.Shared;
 using System.Windows.Input;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Features.UserCheck
 {
-    public class AuthTestViewModel(IAuthTestHttpService authTestHttpService) : ObservableObject
+    public class AuthTestViewModel(IAuthTestHttpService authTestHttpService, INavigationService navigationService) : ObservableObject
     {
         public string ErrorMessage
         {
@@ -38,6 +39,12 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.UserCheck
 
             if (result.IsFailed)
             {
+                if (result.Errors[0].Message == "401")
+                {
+                    await navigationService.GoToLoginAsync();
+                    return;
+                }
+
                 // Map FluentResults (or your custom Result) errors to the UI
                 ErrorMessage = string.Join(Environment.NewLine, result.Errors.Select(e => e.Message));
                 return;

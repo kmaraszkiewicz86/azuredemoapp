@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Text;
 
@@ -31,6 +33,26 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
                         roles
                     };
                 }).RequireAuthorization();
+
+                app.MapGet("/api/mobile/user", (ClaimsPrincipal user) =>
+                {
+                    var roles = user
+                        .Claims
+                        .Where(c => c.Type == "groups")
+                        .Select(c => c.GetGoupName())
+                        .ToArray();
+
+                    return new
+                    {
+                        user.Identity?.Name,
+                        roles
+                    };
+                })
+                // Explicitly tell this endpoint to accept BOTH Cookie and Bearer tokens
+                .RequireAuthorization(new AuthorizeAttribute
+                {
+                    AuthenticationSchemes = $"{CookieAuthenticationDefaults.AuthenticationScheme},{JwtBearerDefaults.AuthenticationScheme}"
+                });
 
                 app.MapGet("/api/checkGroup", (ClaimsPrincipal user) =>
                 {

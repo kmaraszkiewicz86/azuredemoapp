@@ -15,6 +15,14 @@
         }
 
         /// <summary>
+        /// Removes the token from the secure storage
+        /// </summary>
+        public void Remove()
+        {
+            SecureStorage.Default.Remove(TokenKey);
+        }
+
+        /// <summary>
         /// Get token if exist, otherwise return empty string
         /// </summary>
         /// <returns>The api token</returns>

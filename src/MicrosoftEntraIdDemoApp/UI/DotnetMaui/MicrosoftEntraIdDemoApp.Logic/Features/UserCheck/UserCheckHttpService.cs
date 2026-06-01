@@ -2,6 +2,7 @@
 using FluentResults;
 using MicrosoftEntraIdDemoApp.Logic.Extensions;
 using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -25,6 +26,12 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.UserCheck
 
             if (!httpResponse.IsSuccessStatusCode)
             {
+                if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    tokenService.Remove();
+                    return Result.Fail("401");
+                }
+
                 // Use our extension to get the mapped message
                 string errorMessage = httpResponse.ToUserFriendlyMessage();
 

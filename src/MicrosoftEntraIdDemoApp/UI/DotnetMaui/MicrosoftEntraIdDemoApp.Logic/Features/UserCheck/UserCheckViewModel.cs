@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentResults;
+using MicrosoftEntraIdDemoApp.Logic.Shared;
 using System.Windows.Input;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Features.UserCheck
 {
-    public class UserCheckViewModel(IUserCheckHttpService userCheckHttpService) : ObservableObject
+    public class UserCheckViewModel(IUserCheckHttpService userCheckHttpService, INavigationService navigationService) : ObservableObject
     {
         public string ErrorMessage
         {
@@ -27,6 +28,12 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.UserCheck
 
             if (userCheckInfoResult.IsFailed)
             {
+                if (userCheckInfoResult.Errors[0].Message == "401")
+                {
+                    await navigationService.GoToLoginAsync();
+                    return;
+                }
+
                 ErrorMessage = string.Join(',', userCheckInfoResult.Errors.Select(e => e.Message));
                 return;
             }

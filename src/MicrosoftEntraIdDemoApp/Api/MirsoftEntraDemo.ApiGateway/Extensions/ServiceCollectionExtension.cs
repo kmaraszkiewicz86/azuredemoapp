@@ -111,6 +111,46 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
                     };
                 });
 
+                services.Configure<JwtBearerOptions>(
+                    JwtBearerDefaults.AuthenticationScheme,
+                    options =>
+                    {
+                        options.Events = new JwtBearerEvents
+                        {
+                            OnAuthenticationFailed = context =>
+                            {
+                                Console.WriteLine("=== AUTH FAILED ===");
+                                Console.WriteLine(context.Exception);
+
+                                return Task.CompletedTask;
+                            },
+
+                            OnTokenValidated = context =>
+                            {
+                                Console.WriteLine("=== TOKEN OK ===");
+
+                                var claims = context.Principal?.Claims
+                                    .Select(c => $"{c.Type} = {c.Value}");
+
+                                foreach (var claim in claims ?? [])
+                                {
+                                    Console.WriteLine(claim);
+                                }
+
+                                return Task.CompletedTask;
+                            },
+
+                            OnChallenge = context =>
+                            {
+                                Console.WriteLine("=== CHALLENGE ===");
+                                Console.WriteLine(context.Error);
+                                Console.WriteLine(context.ErrorDescription);
+
+                                return Task.CompletedTask;
+                            }
+                        };
+                });
+
                 return services;
             }
         }
