@@ -14,6 +14,21 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
         {
             public WebApplication MapEndpoints()
             {
+                app.Use(async (context, next) =>
+                {
+                    var authHeader = context.Request.Headers["Authorization"].ToString();
+                    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+                    if (!string.IsNullOrEmpty(authHeader))
+                    {
+                        logger.LogInformation("Incoming Authorization: {authHeader}", authHeader);
+                    }
+                    else
+                    {
+                        logger.LogInformation("No Authorization header present in the request.");
+                    }
+                    await next();
+                });
+
                 app.MapGet("/login", (string? redirect) => Results.Challenge(
                     new AuthenticationProperties { RedirectUri = redirect },
                     [OpenIdConnectDefaults.AuthenticationScheme]
