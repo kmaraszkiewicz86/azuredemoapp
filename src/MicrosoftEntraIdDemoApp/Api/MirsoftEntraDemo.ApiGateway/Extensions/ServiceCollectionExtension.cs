@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
+using MirsoftEntraDemo.ApiGateway.Models;
 using System.Text;
 
 namespace MirsoftEntraDemo.ApiGateway.Extensions
@@ -29,6 +30,20 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
             }
 
             public IServiceCollection ConfigureAzureEntraId(bool isDevelopment, ConfigurationManager configuration)
+            {
+                services.ConfigureAuthentication(configuration)
+                    .ConfigureCookieAuthentication(isDevelopment, configuration)
+                    .ConfigureTokenAuthentication(configuration);
+
+                return services;
+            }
+
+            /// <summary>
+            /// Configure authentication for both web / BFF clients and .NET MAUI clients in a single method. This allows us to use the same authentication configuration and policies for both types of clients, while still supporting the different authentication flows (cookie-based for web/BFF and token-based for .NET MAUI).
+            /// </summary>
+            /// <param name="configuration">the appsetting configuration</param>
+            /// <returns></returns>
+            private IServiceCollection ConfigureAuthentication(ConfigurationManager configuration)
             {
                 // 1. Get the standard AuthenticationBuilder receiver
                 var authBuilder = services.AddAuthentication(options =>
@@ -65,6 +80,17 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
                         .Build();
                 });
 
+                return services;
+            }
+
+            /// <summary>
+            /// Configure cookie authentication for web / BFF clients. This will handle the authentication flow with the identity provider and maintain the user's session via cookies.
+            /// </summary>
+            /// <param name="configuration">the appsetting configuration</param>
+            /// <param name="isDevelopment">indicates if the application is running in development mode and if so, the cookie secure policy will be set to SameAsRequest</param>
+            /// <returns></returns>
+            private IServiceCollection ConfigureCookieAuthentication(bool isDevelopment, ConfigurationManager configuration)
+            {
                 // For AJAX / BFF calls we should return 401/403 instead of redirecting to the identity provider.
                 // Redirects cause the browser to follow a cross-origin redirect and CORS will block the response
                 // because the redirect target (login.microsoftonline.com) doesn't contain CORS headers.
@@ -112,10 +138,27 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
                     };
                 });
 
+                return services;
+            }
+
+            /// <summary>
+            /// Configure JWT Bearer authentication for .NET MAUI clients. This will validate incoming access tokens in the Authorization header of API requests.
+            /// </summary>
+            /// <param name="configuration">the appsetting configuration</param>
+            /// <returns></returns>
+            private IServiceCollection ConfigureTokenAuthentication(ConfigurationManager configuration)
+            {
                 services.Configure<JwtBearerOptions>(
                     JwtBearerDefaults.AuthenticationScheme,
                     options =>
                     {
+                        AzureAdOptions azureAdOptions = new();
+
+                        configuration.GetSection("AzureAd").Bind(azureAdOptions);
+
+                        options.TokenValidationParameters.ValidAudience = azureAdOptions.ValidAudience;
+                        options.TokenValidationParameters.ValidIssuer = azureAdOptions.ValidIssuer;
+
                         options.Events = new JwtBearerEvents
                         {
                             OnAuthenticationFailed = context =>
@@ -143,7 +186,7 @@ namespace MirsoftEntraDemo.ApiGateway.Extensions
 
                                 foreach (var claim in claims ?? [])
                                 {
-                                    claimsStringBuilder.AppendFormat( "{0}; ", claim);
+                                    claimsStringBuilder.AppendFormat("{0}; ", claim);
                                 }
 
                                 if (claimsStringBuilder.Length > 0)

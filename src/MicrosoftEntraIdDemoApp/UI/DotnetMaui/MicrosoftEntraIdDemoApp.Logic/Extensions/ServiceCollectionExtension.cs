@@ -59,7 +59,7 @@ namespace MicrosoftEntraIdDemoApp.Logic.Extensions
 
             public IServiceCollection AddHttpServices()
             {
-                var baseAddress = new Uri("http://192.168.8.5:5070/");
+                var baseAddress = new Uri("https://app-entra-demo-api-gateway-cff7bjdec5dxahe3.canadacentral-01.azurewebsites.net/");
 
                 services.AddHttpClient<IAuthTestHttpService, AuthTestHttpService>(client =>
                 {
