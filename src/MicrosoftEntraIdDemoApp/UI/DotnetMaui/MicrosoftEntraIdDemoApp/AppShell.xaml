@@ -11,22 +11,26 @@
     <Shell.ToolbarItems>
         <ToolbarItem
         Text="Logout"
-        Command="{Binding LogoutCommand}" />
+        Command="{Binding LogoutCommand}"
+        IsEnabled="{Binding IsUserLogged}" />
     </Shell.ToolbarItems>
 
     <ShellContent
         Title="Login Page"
         ContentTemplate="{DataTemplate loginFeature:LoginPage}"
-        Route="LoginPage" />
+        Route="LoginPage" 
+        IsVisible="{Binding IsUserNotLogged}" />
 
     <ShellContent
         Title="User Information"
         ContentTemplate="{DataTemplate userCheckFeature:UserCheckPage}"
-        Route="UserCheckPage" />
+        Route="UserCheckPage" 
+        IsVisible="{Binding IsUserLogged}" />
 
     <ShellContent
         Title="Authentication Test"
         ContentTemplate="{DataTemplate authTestFeature:AuthTestPage}"
-        Route="AuthTestPage" />
+        Route="AuthTestPage"
+        IsVisible="{Binding IsUserLogged}" />
 
 </Shell>

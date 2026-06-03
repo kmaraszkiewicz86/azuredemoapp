@@ -9,6 +9,18 @@ public sealed class AppShellViewModel : ObservableObject
 {
     private readonly ITokenService _tokenService;
 
+    public bool IsUserLogged
+    {
+        get => field;
+        set
+        {
+            SetProperty(ref field, value);
+            OnPropertyChanging(nameof(IsUserNotLogged));
+        }
+    }
+
+    public bool IsUserNotLogged => !IsUserLogged;
+
     public AppShellViewModel(
         ITokenService tokenService)
     {
@@ -22,6 +34,8 @@ public sealed class AppShellViewModel : ObservableObject
     private async Task LogoutAsync()
     {
         _tokenService.Remove();
+
+        IsUserLogged = false;
 
         await Shell.Current.GoToAsync("//LoginPage");
     }

@@ -5,10 +5,11 @@ using Microsoft.Identity.Client;
 using MicrosoftEntraIdDemoApp.Logic.Models.Configurations;
 using MicrosoftEntraIdDemoApp.Logic.Shared;
 using MicrosoftEntraIdDemoApp.Logic.Shared.Security;
+using MicrosoftEntraIdDemoApp.Logic.ViewModels;
 
 namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
 {
-    public class LoginViewModel(ILoginHttpService loginHttpService, ITokenService tokenService, INavigationService navigationService) : ObservableObject
+    public class LoginViewModel(ILoginHttpService loginHttpService, ITokenService tokenService, INavigationService navigationService, AppShellViewModel appShellViewModel) : ObservableObject
     {
         public string ErrorMessage
         {
@@ -22,17 +23,24 @@ namespace MicrosoftEntraIdDemoApp.Logic.Features.Login
 
         private async Task OnLoadAsync()
         {
+            appShellViewModel.IsUserLogged = false;
+
             if (await tokenService.IsUserLogged())
             {
+                appShellViewModel.IsUserLogged = true;
+
                 await RedirectToUserCheckPageAsync();
             }
         }
 
         private async Task OnLoginAsync()
         {
+            appShellViewModel.IsUserLogged = false;
+
             Result result = await loginHttpService.LoginAsync();
             if (result.IsSuccess)
             {
+                appShellViewModel.IsUserLogged = true;
                 await RedirectToUserCheckPageAsync();
             }
             else

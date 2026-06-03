@@ -52,7 +52,7 @@ namespace MicrosoftEntraIdDemoApp.Logic.Extensions
                 services.AddTransient<LoginViewModel>();
                 services.AddTransient<UserCheckViewModel>();
                 services.AddTransient<AuthTestViewModel>();
-                services.AddTransient<AppShellViewModel>();
+                services.AddSingleton<AppShellViewModel>();
 
                 return services;
             }
